@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css" integrity="sha384-v2Tw72dyUXeU3y4aM2Y0tBJQkGfplr39mxZqlTBDUZAb9BGoC40+rdFCG0m10lXk" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/fontawesome.css" integrity="sha384-q3jl8XQu1OpdLgGFvNRnPdj5VIlCvgsDQTQB6owSOHWlAurxul7f+JpUOVdAiJ5P" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans+Condensed" rel="stylesheet">
+<title>Doodle</title>
+<style>
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family:'IBM Plex Sans Condensed', sans-serif;
+}
+
+@media screen and (min-width: 768px) {
+	body {
+		position: relative;
+		width: 100vw;
+		height: 100vh;
+		max-height: 100%;
+		max-width: 100%;
+		background: url("doodle_bg.jpeg") no-repeat center center;		
+		background-size: cover;
+	}
+	
+	#container {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(255, 255, 255, .4);
+	}
+	
+	#wrapper {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		width: 500px;
+		height: 800px;
+		overflow: hidden;
+		background: rgba(255, 255, 255, .7);
+		border: 10px solid rgba(128, 128, 128, .7);
+		border-radius: 15px;
+	}
+	
+	#title {
+		width: 100%;
+		height: 10%;
+		font-size: 3rem;
+		display: block;
+		text-align: center;
+		margin-top: 20px;
+		margin-bottom: 45px;		
+	}
+	
+	input {
+		width: 80%;
+		height: 45px;
+		font-size: 25px;
+		margin: 0 auto;
+		display: block;
+		border-radius: 10px;
+		text-align:center;
+	}
+	
+	input:focus::placeholder {
+		color: transparent;
+	}
+	
+	.ui-datepicker {
+		width: 24em !important;
+	}
+	
+	.ui-datepicker-year {		
+		display: none;
+	}
+	
+	thead {
+		display: none;
+	}
+	
+	#showDoodle {
+		position: absolute;
+		width: 90%;
+		top: 65%;
+		left: 50%;
+		transform: translate(-50%, -35%);
+	}
+	
+	#showDoodle img {
+		width: 100%;
+	}
+	
+	#slider-wrapper {
+		position: absolute;
+		width: 90%;
+		height: 80px;
+		top: 85%;
+		left: 50%;
+		transform: translate(-50%, -15%);
+		overflow: hidden;
+		border-radius: 15px;
+		border: 2px outset grey;
+	}
+
+	#inner-wrapper {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 200%;
+		animation-duration: .3s;
+		animation-timing-function: linear;
+		animation-fill-mode: forwards;
+	}
+
+	@keyframes slideLeft {	
+		50% {left: -75%}
+		75% {left: -90%}
+		100% {left: -100%}
+	}
+
+	@keyframes slideRight {	
+		50% {left: -25%}
+		75% {left: -10%}
+		100% {left: 0}
+	}
+
+	#block {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 50%;
+		height: 100%;
+		background: red;
+	}
+	
+	#blocked-text {
+		display: inline-block;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		font-size: 1.2rem;
+		width: 80%;
+	}
+
+	span {
+		position: absolute;
+		right: 10px;
+		line-height: 80px;
+		height: 100%;
+		color: white;
+		font-size: 3rem;
+	}
+	
+	#show {
+		position: absolute;
+		left: 50%;
+		top: 0;
+		width: 50%;
+		height: 100%;
+		background: #00cc00;
+	}
+	
+	#show #show-answer {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		color: white;
+		width: 90%;
+		text-align: center;
+	}
+}
+
+@media screen and (min-width: 576px) and (max-width: 767px) {
+	body {
+		position: relative;
+		width: 100vw;
+		height: 100vh;
+		max-height: 100%;
+		max-width: 100%;
+		background: url("doodle_bg.jpeg") no-repeat center center;		
+		background-size: cover;
+	}
+	
+	#container {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(255, 255, 255, .4);
+	}
+	
+	#wrapper {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		width: 450px;
+		height: 720px;
+		overflow: hidden;
+		background: rgba(255, 255, 255, .7);
+		border: 10px solid rgba(128, 128, 128, .7);
+		border-radius: 15px;
+	}
+	
+	#title {
+		width: 100%;
+		height: 10%;
+		font-size: 3rem;
+		display: block;
+		text-align: center;
+		margin-top: 20px;
+		margin-bottom: 55px;		
+	}
+	
+	input {
+		width: 80%;
+		height: 45px;
+		font-size: 25px;
+		margin: 0 auto;
+		display: block;
+		border-radius: 10px;
+		text-align:center;
+	}
+	
+	input:focus::placeholder {
+		color: transparent;
+	}
+	
+	.ui-datepicker {
+		width: 344px !important;
+	}
+	
+	.ui-datepicker-year {		
+		display: none;
+	}
+	
+	thead {
+		display: none;
+	}
+	
+	#showDoodle {
+		position: absolute;
+		width: 90%;
+		top: 65%;
+		left: 50%;
+		transform: translate(-50%, -35%);
+	}
+	
+	#showDoodle img {
+		width: 100%;
+	}
+	
+	#slider-wrapper {
+		position: absolute;
+		width: 90%;
+		height: 80px;
+		top: 85%;
+		left: 50%;
+		transform: translate(-50%, -15%);
+		overflow: hidden;
+		border-radius: 15px;
+		border: 2px outset grey;
+	}
+
+	#inner-wrapper {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 200%;
+		animation-duration: .3s;
+		animation-timing-function: linear;
+		animation-fill-mode: forwards;
+	}
+
+	@keyframes slideLeft {	
+		50% {left: -75%}
+		75% {left: -90%}
+		100% {left: -100%}
+	}
+
+	@keyframes slideRight {	
+		50% {left: -25%}
+		75% {left: -10%}
+		100% {left: 0}
+	}
+
+	#block {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 50%;
+		height: 100%;
+		background: red;
+	}
+	
+	#blocked-text {
+		display: inline-block;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		font-size: 1.2rem;
+		width: 80%;
+	}
+
+	span {
+		position: absolute;
+		right: 10px;
+		line-height: 80px;
+		height: 100%;
+		color: white;
+		font-size: 3rem;
+	}
+	
+	#show {
+		position: absolute;
+		left: 50%;
+		top: 0;
+		width: 50%;
+		height: 100%;
+		background: #00cc00;
+	}
+	
+	#show #show-answer {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		color: white;
+		width: 90%;
+		text-align: center;
+	}
+}
+
+@media screen and (min-width: 420px) and (max-width: 575px) {
+	body {
+		position: relative;
+		width: 100vw;
+		height: 100vh;
+		max-height: 100%;
+		max-width: 100%;
+		background: url("doodle_bg.jpeg") no-repeat center center;		
+		background-size: cover;
+	}
+	
+	#container {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(255, 255, 255, .4);
+	}
+	
+	#wrapper {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		width: 400px;
+		height: 640px;
+		overflow: hidden;
+		background: rgba(255, 255, 255, .7);
+		border: 10px solid rgba(128, 128, 128, .7);
+		border-radius: 15px;
+	}
+	
+	#title {
+		width: 100%;
+		height: 10%;
+		font-size: 2.8rem;
+		display: block;
+		text-align: center;
+		margin-top: 20px;
+		margin-bottom: 55px;		
+	}
+	
+	input {
+		width: 80%;
+		height: 45px;
+		font-size: 25px;
+		margin: 0 auto;
+		display: block;
+		border-radius: 10px;
+		text-align:center;
+	}
+	
+	input:focus::placeholder {
+		color: transparent;
+	}
+	
+	.ui-datepicker {
+		width: 304px !important;
+	}
+	
+	.ui-datepicker-year {		
+		display: none;
+	}
+	
+	thead {
+		display: none;
+	}
+	
+	#showDoodle {
+		position: absolute;
+		width: 90%;
+		top: 65%;
+		left: 50%;
+		transform: translate(-50%, -35%);
+	}
+	
+	#showDoodle img {
+		width: 100%;
+	}
+	
+	#slider-wrapper {
+		position: absolute;
+		width: 90%;
+		height: 80px;
+		top: 85%;
+		left: 50%;
+		transform: translate(-50%, -15%);
+		overflow: hidden;
+		border-radius: 15px;
+		border: 2px outset grey;
+	}
+
+	#inner-wrapper {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 200%;
+		animation-duration: .3s;
+		animation-timing-function: linear;
+		animation-fill-mode: forwards;
+	}
+
+	@keyframes slideLeft {	
+		50% {left: -75%}
+		75% {left: -90%}
+		100% {left: -100%}
+	}
+
+	@keyframes slideRight {	
+		50% {left: -25%}
+		75% {left: -10%}
+		100% {left: 0}
+	}
+
+	#block {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 50%;
+		height: 100%;
+		background: red;
+	}
+	
+	#blocked-text {
+		display: inline-block;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		font-size: 1.2rem;
+		width: 80%;
+	}
+
+	span {
+		position: absolute;
+		right: 10px;
+		line-height: 80px;
+		height: 100%;
+		color: white;
+		font-size: 3rem;
+	}
+	
+	#show {
+		position: absolute;
+		left: 50%;
+		top: 0;
+		width: 50%;
+		height: 100%;
+		background: #00cc00;
+	}
+	
+	#show #show-answer {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		color: white;
+		width: 90%;
+		text-align: center;
+	}
+}
+
+@media screen and (max-width: 419px) {
+	body {
+		position: relative;
+		width: 100vw;
+		height: 100vh;
+		max-height: 100%;
+		max-width: 100%;
+		background: url("doodle_bg.jpeg") no-repeat center center;		
+		background-size: cover;
+	}
+	
+	#container {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(255, 255, 255, .4);
+	}
+	
+	#wrapper {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		width: 90%;
+		height: 90%;
+		overflow: hidden;
+		background: rgba(255, 255, 255, .7);
+		border: 10px solid rgba(128, 128, 128, .7);
+		border-radius: 15px;
+	}
+	
+	#title {
+		width: 100%;
+		height: 10%;
+		font-size: 2rem;
+		display: block;
+		text-align: center;
+		margin-top: 20px;
+		margin-bottom: 55px;		
+	}
+	
+	input {
+		width: 80%;
+		height: 45px;
+		font-size: 25px;
+		margin: 0 auto;
+		display: block;
+		border-radius: 10px;
+		text-align:center;
+	}
+	
+	input::placeholder {
+		font-size: 1rem;
+	}
+	
+	input:focus::placeholder {
+		color: transparent;
+	}
+	
+	.ui-datepicker {
+		width: 70% !important;
+	}
+	
+	.ui-datepicker-year {		
+		display: none;
+	}
+	
+	thead {
+		display: none;
+	}
+	
+	#showDoodle {
+		position: absolute;
+		width: 90%;
+		top: 65%;
+		left: 50%;
+		transform: translate(-50%, -35%);
+	}
+	
+	#showDoodle img {
+		width: 100%;
+	}
+	
+	#slider-wrapper {
+		position: absolute;
+		width: 90%;
+		height: 60px;
+		top: 85%;
+		left: 50%;
+		transform: translate(-50%, -15%);
+		overflow: hidden;
+		border-radius: 15px;
+		border: 2px outset grey;
+	}
+
+	#inner-wrapper {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 200%;
+		animation-duration: .3s;
+		animation-timing-function: linear;
+		animation-fill-mode: forwards;
+	}
+
+	@keyframes slideLeft {	
+		50% {left: -75%}
+		75% {left: -90%}
+		100% {left: -100%}
+	}
+
+	@keyframes slideRight {	
+		50% {left: -25%}
+		75% {left: -10%}
+		100% {left: 0}
+	}
+
+	#block {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 50%;
+		height: 100%;
+		background: red;
+	}
+	
+	#blocked-text {
+		display: inline-block;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		font-size: 0.8rem;
+		width: 80%;
+	}
+
+	span {
+		position: absolute;
+		right: 10px;
+		line-height: 60px;
+		height: 100%;
+		color: white;
+		font-size: 2rem;
+	}
+	
+	#show {
+		position: absolute;
+		left: 50%;
+		top: 0;
+		width: 50%;
+		height: 100%;
+		background: #00cc00;
+	}
+	
+	#show #show-answer {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		color: white;
+		width: 90%;
+		text-align: center;
+	}
+}
+</style>
+</head>
+<body>
+<div id="container">
+	<div id="wrapper">
+		<div id="title">What's the Doodle on that day</div>
+		<input type="text" id="demo" placeholder="click/tap here to get date"></input>
+		<div id="showDoodle">
+			<img src="doodle%20default.png"></img>
+		</div>
+		<div id="slider-wrapper">
+			<div id="inner-wrapper">
+				<div id="block"><p id="blocked-text">Slide to see what's this Doodle about</p><span><i class="fas fa-chevron-circle-left"></i></span></div>
+				<div id="show">
+					<div id="show-answer">Please select a date</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</div>
+<script>
+var date;
+var doddleObj = {
+	Jan: {
+		01: {pic: "https://lh3.googleusercontent.com/FxjhNsEh72v8ebdD3PsDxE0MFG5pySaPz5bdPpkRnGbxZ6aqT28A7rA6NNile8N1zQvwDcjucS9BigYHU4jpGXlWEtq1BtIUAZ4DrOXyJA", answer: "New Year's Day"},
+		02: {pic: "https://lh3.googleusercontent.com/YWyzaGPK7gBStCrjCU_QpSEZ8Lu79D1Jy6jLe5t5CFsoj7TOflvSmMTqEmg29y35hxLSG4BgjE34VfpidKQgyrVt6e-2giHIKiX8eAw", answer: "First Day of School 2018 (Singapore)"},
+		03: {pic: "https://lh3.googleusercontent.com/0jLOPeTmX9gMDHoS0O6Iiw7j-1x7s7Cm35_iFGnBAYCBkQGz0K59Dt9S4lsLM7sgecd_obC2aS9H45FFx2tvQlUU5U9HrEHS2dIwuLkd", answer: "Emma Ihrer’s 161st Birthday"},
+		04: {pic: "https://www.google.com/logos/2010/newton10-tree.jpg", answer: "Sir Isaac Newton's Birthday"},
+		05: {pic: "https:https://lh3.googleusercontent.com/mJ3nluqRyx2kCUSZs8uugnyZ6l9VQpGPOW-4fcc2EXhH16qS1T0cxQnwivMINFzcC8uX-K6caKkLCpixD0lsAWa1sDZrBAy-85SOX_SF=s660", answer: "Happy Holidays"},
+		06: {pic: "https://lh3.googleusercontent.com/zYrgbqhMIzAT5xrN6vrFqDE7Z3KbAvvnkRKx7dyHtcHjShzv30tzJxWjVdxxexHgaTd2HOo5VtGWbT4vgcdIf7FE2SI62s7l6kJd6rA", answer: "Holidays 2018 (Eastern Europe) Day 1"},
+		07: {pic: "https://lh3.googleusercontent.com/sQiPvHnwFJDwOE1mwBV7xqX8If4R8Y0JafEjslC1P-26mzkUMVOKhnLci96xLemjvnjmM6_5R7lFmF8t0-IJS9JQMqtv6UTdmfKH6DwZQQ", answer: "Holidays 2018 (Eastern Europe) Day 2"},
+		08: {pic: "https://lh3.googleusercontent.com/juxcqBe8GRyTh9ER-yTxBGexjpMz-KVfegI6b7lly7CHveriDGeqq-oexPGW0pp0qg4BP86_an-a3YoV9lw3rUXUTqXeIGYwlFUvSOgm", answer: "Fearless Nadia’s 110th Birthday"},
+		09: {pic: "https://lh3.googleusercontent.com/MNdW_B5ALAh1iIqxuC2xE3c08tetHEOCrWwV9qQUPjHc2qez1CMetX00tIpjYq53fGvQY7McI6JrHb5uTVi-p0HlYRWQUY2vqNcTxZ0E", answer: "Har Gobind Khorana’s 96th Birthday"},
+		10: {pic: "https://www.google.com/logos/doodles/2015/childrens-day-2015-thailand-5175016266137600-hp.jpg", answer: "Children's Day (Thailand)"},
+		11: {pic: "https://lh3.googleusercontent.com/-7_P7VzY-ngYFQLdpFQFtV4fA8-nSozUwflH9BRcwSBVRUXqDKm4esfj1flYN9VA1PkLvHaYIfCAO9mZlgmENLPlUwEnPmuxoA9NKko", answer: "Alan Paton’s 115th Birthday"},
+		12: {pic: "https://lh3.googleusercontent.com/gQ1PogptZqYV8dVO0rZ4vff8HkCAIBpUdz9Z1Tsp6iw16BFae-JorWQQCVxGtyFXD9Y6qC1sPbNOLP5eu7nBCBTkBWJyZQqc23goQlU", answer: "Czechia Elections 2018"},
+		13: {pic: "https://lh3.googleusercontent.com/QTOnsXY9b8cp5kF0CoVlLFGlnNAGlNlsHZwdWDWk-jLNIrzhLBkIlLQKuckWLMeNFqFZ2HQ1NUyws3dqYMNwy6hpxrhaOIoh8EMcZNYS", answer: "Zhou Youguang’s 112th Birthday"},
+		14: {pic: "https://lh3.googleusercontent.com/lPDZHQEhMeOcsGuFZp4uXjm1U4aQrmL2RRiWTHWaGOPun-aZQPJH3T9JLavYQNgPDOW7S1h4YEGP-VgrwDyaVKqL_--Zw1jSlcj4jfE", answer: "Mahasweta Devi’s 92nd Birthday"},
+		15: {pic: "https://lh3.googleusercontent.com/m6j8mVkixHPlF71ADEralG9SOA3gfmoxhmu4TGcCbRSpKNcJFybZgLpcXuo-TnDdUrNd3b1YFYLwqxVdjqyynTjCG9iatWBPEcONIsB1yQ", answer: "Teachers' Day 2018 (Venezuela)"},
+		16: {pic: "https://lh3.googleusercontent.com/eRuGxUw3R2XJdUVEx2XKEBbdJHlIBnGTaK-ZwglAVZ7jwTk47pYb6yjHK5T1S3QVBbi24DrwSHxoYWPb1e2gDFR-Tpmv666DQonRVenB", answer: "Katy Jurado’s 94th Birthday"},
+		17: {pic: "https://lh3.googleusercontent.com/VU4mpWDIbHUatZSWJLmgQthyoPJfQou69EO4sUBAWbQ_WDTL7wwjREeMv2PSr7MxckDU1pBzMFgBry0S3JfWmiLD9k1ea7WJJPbBVeQ", answer: "Teachers' Day 2018 (Thailand)"},
+		18: {pic: "https://www.google.com/logos/doodles/2016/martin-luther-king-jr-day-2016-4899278629634048-hp.jpg", answer: "Martin Luther King Jr. Day"},
+		19: {pic: "https://www.google.com/logos/doodles/2016/jose-alfredo-jimenezs-90th-birthday-4883794869878784-hp.jpg", answer: "José Alfredo Jiménez’s Birthday"},
+		20: {pic: "https://www.google.com/logos/doodles/2015/ji-hyun-oks-54th-birthday-5088910761787392.2-hp.jpg", answer: "Ji Hyeonok’s Birthday"},
+		21: {pic: "https://lh3.googleusercontent.com/vuhOxfv-jUyzMXyx-yjz4bTQpJZBwnUyOCoYK9LxwoYeN00nDA40fLhPchHnEZmmnveGjmVai8jqbiP7wL7trDvnJKT1eK9V-Z85cH0", answer: "Eua Sunthornsanan’s 108th Birthday"},
+		22: {pic: "https://lh3.googleusercontent.com/hRTvgpt6DyN_zcyhMDVN-ui4V04GhBq2CZFU3GSTIQVowOdf0XRqYk2VClaqy2Im4j6yCPTDLLVCVnHeVWXOnOBVm8Md4GA9Kbia3qo5", answer: "Sergei Eisenstein’s 120th Birthday"},
+		23: {pic: "https://lh3.googleusercontent.com/l8qPGyRj5Zq2YtSqplVa1UzKSr6_bjBRrvref2ljXiZtCdyeoDTurSa7BAFmbBAiC0Y8WNUlcNLKjhDHCpQm7I86iczDOcINMwRIwok", answer: "Stephen Keshi’s 56th Birthday"},
+		24: {pic: "https://www.google.com/logos/2008/au_doodle4google07.gif", answer: "Doodle 4 Google - Australia Winner"},
+		25: {pic: "https://lh3.googleusercontent.com/fjmEaXMHmmh5DO1_jLA2OrvdH3oj8kAt-mWb6mf17Yx2Sn28c_bea5XV6-a4GbQzNDQwIwSfxmbhabXFoq3LOZS3jRkc_EUqlf3QpNu7", answer: "Virginia Woolf’s 136th Birthday"},
+		26: {pic: "https://lh3.googleusercontent.com/cTnVimUnHIQQc5jBGQFmGxz2zcErlzHjRMc8xv3-oUp3zT1QguF-uv58kFG3FCwjtUulF_bbT2ipN-XQmDExb0NQ6316eDz_ixU_8Qnd", answer: "Wilder Penfield’s 127th birthday"},
+		27: {pic: "https://www.google.com/logos/doodles/2016/beatrice-tinsleys-75th-birthday-5688837634260992-hp.jpg", answer: "Beatrice Tinsley’s  Birthday"},
+		28: {pic: "https://lh3.googleusercontent.com/KJR6NmtUv2TTVcnwOgRHr8KQL1-38_2f_zqt4Li5sCbUYH0CW4v0bjYa4bTGiMx8fPk56IUt4RaTy4sQeXi7vnjhS_Qnf0uFMKGswJo", answer: "50th Anniversary of Princess Sirindhorn Bird First Sighting"},
+		29: {pic: "https://lh3.googleusercontent.com/RSoG20zZVD32wiwJacXBJICVa-q73I48fgwD2b0KlVdjDhMZZeJHnXy31kXxR6dS704tw-xI7lYeLrGNqVuavaETPalu5catqtylXl7X", answer: "Teresa Teng’s 65th Birthday"},
+		30: {pic: "https://www.google.com/logos/doodles/2016/amrita-sher-gils-103rd-birthday-6242590452088832.2-hp.jpg", answer: "Amrita Sher-Gil’s Birthday"},
+		31: {pic: "https://www.google.com/logos/doodles/2015/concepcion-arenals-195th-birthday-5654415147008000-hp.jpg", answer: "Concepción Arenal’s Birthday"}
+	},
+	Feb: {
+		01: {pic: "https://lh3.googleusercontent.com/MCMIU8YNZO7WQ9rj3DUlr_kAvztafbW5ve_OUuuzWUPE_TqG67IsNdiQ5TYrzKzVYV-IJgV-U9kUF8t2zL5ajphyoKIxdaUMjR6Z2gTuag", answer: "Celebrating Carter G. Woodson"},
+		02: {pic: "https://www.google.com/logos/doodles/2016/frantiska-plaminkovas-141st-birthday-6217602735013888-hp.jpg", answer: "Františka Plamínková’s Birthday"},
+		03: {pic: "https://lh3.googleusercontent.com/zvogCmW4BIRwcX8S55itqnwbf75MJdPE-MYq5MJvLuGSVNEa6mlSJM1VpKVhRoFztAwy8lcjmz8TAWDrqhZiiPXj4qg6Mg2vld4B5cFQ", answer: "Elizabeth Blackwell’s Birthday"},
+		04: {pic: "https://lh3.googleusercontent.com/F5rSvidFElFZi-RYFcHdjeRcm9_n4PRPTKchxIQzAx_xPrFevrvASIIbvUOBq3Cep39G_Xx2RAD4nQOqH8SCTw-YeLKZV_wJaAN6yjg", answer: "Sri Lanka National Day"},
+		05: {pic: "https://lh3.googleusercontent.com/l9V9W4FQlcAfKa7tkNy5g4GD8eMJUcnf-XdsNvK_xFMd0-cmvaH1AXQFu69Es-n2RqL7kk3FOGXoe_JCVVsz-d9u0KHHm11nexoQ6Jy2", answer: "Costa Rica Elections"},
+		06: {pic: "https://lh3.googleusercontent.com/LbkR1E3a1f6STwld0wceX-mlVCkDiBJla1x9uCqAKNoM_YGU_yJqdkYvTcWZ9DLVDM799zNOSJNyIJn21zCr3Y9dQhs7IxLvP4wHCNI29Q", answer: "Waitangi Day (New Zealand National Day"},
+		07: {pic: "https://lh3.googleusercontent.com/Eassi1eVJNtzYbB4D7YUg_gzswcJbIynJbLE4VuApNCcVQwoQcTfNuO1AGX7nM-wrvIcUdm3w-fZN6aiXuO5S8pdvFdlzt2e5w1MQ3Wx", answer: "Aysel Gürel’s 89th Birthday"},
+		08: {pic: "https://lh3.googleusercontent.com/BB1i-tjhzE5ellupnngUHI7aj9UCcOVGu3sSKMpbwC9zCQClsnUwb5S5ziKDiqFMD3--BHmpoKVogsW98FnoqtKGmrteODbWbsmShokt", answer: "Paula Modersohn-Becker’s 142nd Birthday"},
+		09: {pic: "https://lh3.googleusercontent.com/lzqYQNbaLNl68UrXTDAWDfkFpdxVbt_O_Kh1iBw4pCJL5hY7BuyGMyTNUoAfQXTJVfzLR8ev0eFiZ0GsXe8-INWuLCCQTKGaqelhfiK5dQ", answer: "Doodle Snow Games"},
+		10: {pic: "https://lh3.googleusercontent.com/sQm09qitY6ORrxogRl8ytOCVM9KJM_0AP-z_WIDpkxZ809fcN7UGPodZ9T_PnH0aoepBEiWASl7J6X32b1uve6zHyZM_yaa5QBn3-18", answer: "Doodle Snow Games"},
+		11: {pic: "https://lh3.googleusercontent.com/d2uSWBhFumoyqzje96pxzI5R6BmCBaJLoxHlkMiKfAz4IPkeH2-DkkPhJyQHQgkZ3O-d_WcV241O6iSfeVKR-BO8OOlJKVWpvrhhUhu9", answer: "Mother's Day 2018 (Norway)"},
+		12: {pic: "https://lh3.googleusercontent.com/50dpiS7cTkIHEVfSyC0-yJCjtyS4jtKYSndBT2df_GmHMHZScqB1brkzZ40km9Dh8eGABxKUZSIlzUedZ8wctIqQpXDXtB55RROfkr5dZw", answer: "Rosenmontag 2018"},
+		13: {pic: "https://lh3.googleusercontent.com/RUKDUzFJBeEVe7fRD_6CyqSyJ2fYjHkCOakzElG07bcVv6JaJQF-X0zsFoxWltsDBC6sm2ka69eKkuyIMAq2eum3f-6ZO3uB-Feq7M9n", answer: "Carnival 2018"},
+		14: {pic: "https://lh3.googleusercontent.com/RznF3pkOeiMx2fDnX19mx1qrHy-1fdhMEwq9aNfeSC1G1vL6f1Ny6enAFXEvF-JbBSw2l7IkMa2nm9NvkILhAaJ0Na4WOywy2RPwbNPd", answer: "Valentine's Day"},
+		15: {pic: "https://lh3.googleusercontent.com/_c-CvmCQiG0x2G8pFX9QEJDe81qEcVtMwMobkoSJaiHCBdtAJOrXSNzeODrDTo1_P7BUac-PNbb24A5HpEqkSaLeRwCMohc6UB_kfdwu", answer: "Serbia National Day"},
+		16: {pic: "https://lh3.googleusercontent.com/LRQ1pNzHRt-q6SGSz26Cl_78XQOr-Ux6r3-wNfnOnZO4WAA9VpATggXAv-X8J5hI52Sbd7vxvJrrVg_LDzPN0O5Zuc0_MJfZtSmhyjo", answer: "Lithuania Independence Day"},
+		17: {pic: "https://lh3.googleusercontent.com/J9ZhZpADzqWeBKC4FCm37PClhLwM6O2ENW1X4EDXhCThCrRJZ1OzmhW_A9xtWg3cRqzpfBJhPU17YdEe8yaC9SyuD0b5LU8EObnXDA7n", answer: "Doodle Snow Games"},
+		18: {pic: "https://lh3.googleusercontent.com/ExFqH0e0vlWqRM2mjcMyk-MbQlC2A4fOyBX6PEPoEa3SE5i3rs_IP2yREm2UbaHLOqlwE-ePIhZIFAlyV6h-7dHnVdMlwa-VOpX1FlDM", answer: "Carnival 2018 (Greece)"},
+		19: {pic: "https://lh3.googleusercontent.com/IXhOAoMKJNRqEatg19sbAQFjBwA2w-k4OSBOGA5-rwU7RDzBTwlQLNFg2u-9yw329lsHvVgJ75ucsEPbQeoeIgFdKmkcveY_zmDo5bY", answer: "Doodle Snow Games"},
+		20: {pic: "https://www.google.com/logos/2011/munkacsy11-hp.jpg", answer: "Mihaly Munkacsy's Birthday"},
+		21: {pic: "https://www.google.com/logos/2013/park_su-geuns_birthday-1055005-hp.jpg", answer: "Park Su-Geun's Birthday"},
+		22: {pic: "https://www.google.com/logos/doodles/2016/maria-erika-olofsdotter-kruukkas-150th-birthday-6232334573502464-hp.jpg", answer: "Maria Erika Olofsdotter Kruukka’s Birthday"},
+		23: {pic: "https://lh3.googleusercontent.com/NeTpc1irW-aQ7aARun0yovf54uNPQyKvZG4lTYeUGY0T6DV5-Z5N2xJoZXkNdp9B7guC9z1c29zIIwP75C91iUf6fYeWjhDa6aCUHTV8ew", answer: "Doodle Snow Games"},
+		24: {pic: "https://lh3.googleusercontent.com/TuqAB6jDzHmP8Bddl7fMEsLEYU7QRpinN3FbXh6hOLP00dMis1eotbAEVoByrj4qft-XojqEb2RjzLiCrx9GPzQp6oImEz5xsLd-5BY", answer: "Estonia Independence"},
+		25: {pic: "https://lh3.googleusercontent.com/ufx5vDCTaDzzH3otAWQ3GyABf4l3-dqBa1a1KG9k_NSuejf6pxcLfeXOwi53plzxwZeKLz_s2ysPqwdekygQwepJO7D91mTWftovAieB", answer: "Doodle Snow Games"},
+		26: {pic: "https://www.google.com/logos/doodles/2016/ireland-elections-2016-5446311652360192.3-hp.jpg", answer: "Ireland Elections"},
+		27: {pic: "https://www.google.com/logos/doodles/2016/dominican-republic-national-day-2016-5653817813106688-hp.jpg", answer: "Dominican Republic National Day 2016"},
+		28: {pic: "https://lh3.googleusercontent.com/yfDkGL8hVHSKJt5d8G5jCS4aC8t0H_VJphlutCjjbETg0IHVvuR-taYXJrkN8RBJJ3iS8uLfrT4zA0SfgYh1TlNpOTBpxA1uWRoqlmE", answer: "Dominican Republic Independence Day"}
+	},
+	Mar: {
+		01: {pic: 'https://lh3.googleusercontent.com/9sUerDRMmN9_8RKNEbLCZyDI_oWlhO1adGd4JInQdV5tzZL9lEpdTOc5690RFUZI-c3BdC8MO26_ITynaxSUWR9upf79nIpvTM1lwow6', answer: "St. David's Day"},
+		02: {pic: 'https://www.google.com/logos/doodles/2018/usmar-ismails-97th-birthday-6322954328604672-2x.png', answer: "Usmar Ismails Birthday"},
+		03: {pic: 'https://lh3.googleusercontent.com/8UQMaEDQkYJMV_hj4opfZ0zhQ5l5KWGC6zNlsUV_uxaLo5i_2UDfLncFX4_LBaNXHr5laJ1aqC2qNOyMZDW9stog3tXPYA-HN5F_Vso', answer: "Girls' Day"},
+		04: {pic: "https://www.google.com/logos/doodles/2018/italian-elections-2018-4533084824272896-l.png", answer: "Italy Elections"},
+		05: {pic: "https://lh3.googleusercontent.com/JtUZJ-kUW3n0-04oSc0b2f-hBT4ZGkip8UZmQuFfJ7YNj3Ljy3k1bWuPRWhAkAJDhKsPdVRXsKdWXaiZfD5imhvTGjFqBGyT5oooDT4F", answer: "Samia Gamal’s Birthday"},
+		06: {pic: "https://lh3.googleusercontent.com/uTKPpQHdwm-slRYKJ4LKrVFYZSR1g0YueyICX4h88UpbQU4dXToj0ZW56l6Y5W8EiOMJnbXZ_AaSvjHuLm78OyjmqbK0cxozBbRdwns", answer: "Ghana Independence Day 2017"},
+		07: {pic: "https://www.google.com/logos/doodles/2016/icc-world-twenty20-opening-day-2016-5584871592296448-hp.jpg", answer: "ICC World Twenty20 Opening Day"},
+		08: {pic: "https://lh3.googleusercontent.com/Z7XqV0peGkIW__zbr6pE11W8ZKtp2iicfwUmuNV1STUFAlr65IT99H-H_LpuhHtcbxbrWGzrRCNTy8S-OIiCDvmV9BuaV1EmVdXGdCA9", answer: "International Women's Day"},
+		09: {pic: "https://lh3.googleusercontent.com/ZJxtJQorwLfOOATjvqwtSdMPgvUiKFNLLhKqTpBAkW5LHwiV2ftP3UNekon3nIzJ6UCmZl9mH-3PypGF6UaBiF1LaZdCG634l2UHNWM", answer: "Paralympics"},
+		10: {pic: "https://lh3.googleusercontent.com/87WJrsU6BYOmVPsfpl3-HSxJJXZ29OcDh6_43NVFGAuwTkF_fVq_NxBt2dgcQcyc4pkgVbhkidN870dt9fhcaWX8Pm30VeKZV4N7kNSL", answer: "Celebrating the Alishan Forest Railway"},
+		11: {pic: "https://lh3.googleusercontent.com/xx2wuO1x2E-cermFlh_fjb0cRAK51lh0VjmdyGDCK3FYSc_-cUB-jTNKmpxMcfRGAI_kgdobuUz3fqRnAT_UEXItReIhRmj7bcQ9lAOF", answer: "Mother's Day (UK & Ireland)"},
+		12: {pic: "https://lh3.googleusercontent.com/Qd_pA14IFO1RqB8rKHdtVbHy1AE58GI_mBo999uXu3H7tf22kp2VuEy3V3pxeks-jwXusMo-IT5g2ZrE7h6IuvwK-9uNCA1IJZnDEROX", answer: "Holi Festival"},
+		13: {pic: "https://lh3.googleusercontent.com/Qd_pA14IFO1RqB8rKHdtVbHy1AE58GI_mBo999uXu3H7tf22kp2VuEy3V3pxeks-jwXusMo-IT5g2ZrE7h6IuvwK-9uNCA1IJZnDEROX", answer: "Holi Festival"},
+		14: {pic: "https://lh3.googleusercontent.com/qT3anz5ifMS9tnTKH6fDMGmIb4hd3OmnxkY5hE9Byz2HqoV_2Lamko1Amshp5grzhdRtMjcucYtigr4XYFysKHDDvoXYxEBISuSCE5LT", answer: "Anniversary of Pi Day!"},
+		15: {pic: "https://lh3.googleusercontent.com/YDFNLs9udVK2fw7GNOsochZW0Gd4je9R3EBJ6xQ8Gw_U3sIrGmv2uFjT0znKm_9x4Ycom48jU_LMUUs208_aMCO_lQ7WSMVbYus7ioU1", answer: "Hungary National Day"},
+		16: {pic: "https://lh3.googleusercontent.com/RGy5zvYSxHYHq-VcRyYYOLbrittjTiS3Ce_-bsWkl6IQHrmp_eA47vclBMDjuij__2hGL8U_qebAThkP6l-fzLkQ5IQOE8bQ88DFR29S", answer: "Maria Carlota Costallat de Macedo Soares' Birthday"},
+		17: {pic: "https://lh3.googleusercontent.com/iZJdIwi47wjbsXg_wK55dTfjthz5Zn_MRfNfshKIr1R3HeZJiEgLb1naO_t6vx9-BjxU1rU2pBubXEqoxm_ofso8flIS1KKlgZVxE_E", answer: "St. Patrick's Day"},
+		18: {pic: "https://lh3.googleusercontent.com/xsxam9WWqR-z3naMJEtLh0xiBXnR5GSo_eB9UJtwbDdVprC_HBP133sJjTxSvC3OFEuxyM9MpXa9XkMx6Uk0qbHLiyiICYeqOxAYXsc", answer: "Erich Ohser's Birthday"},
+		19: {pic: "https://lh3.googleusercontent.com/OzSxHw472prM6xg_2J0pwD91c5mEihh7XBMY-TJSb1Mt6D_5-qEjQWiGz89FP0QBq8XcEewkx3jcxTvQUomaPNDH0h35OVdNajHCE5M", answer: "Minna Canth’s Birthday"},
+		20: {pic: "https://lh3.googleusercontent.com/EYbqw2aoi2egVhMDUWapfF8b7gXXssc_L1Ybg1EmD6rD8ACfLfozBaQaiCKFuHw15_DQZyjdN10dq0mkSn9AYIsWP92GtBhcR-EdbRuY", answer: "First Day of Spring 2017 (Northern Hemisphere)"},
+		21: {pic: "https://lh3.googleusercontent.com/glSQvneO0CrRVYIxACfTq5ESxm45yLlVEs0Vw0ZuLXSod35EwQr8qp5tyi38Bei8iwTV1K5sPPw4LkmUgjG9fIlOXomnux8hAeHTwRyr", answer: "Mother's Day (MENA)"},
+		22: {pic: "https://lh3.googleusercontent.com/C78KCYz_ZCiLtVxVPeHb9ZKpYUyeDyUHSliNc0hzWySUprFp_zuBlSJ5pfUpjcfBFPUhDxEJzKCNhYJu6LKBxwIkfBg2iICXl-Rd2-SO", answer: "Nowruz (Kazakhstan)"},
+		23: {pic: "https://lh3.googleusercontent.com/1gtH2gjkjbb8J5dyX5HJTb_nge26z_ALE2huc9t_j1AC8kLcTFT_1J-ugHvzThP00rym0YgT6Gdxx6Ykw2NURZzapfjITLvUdWGeeIH9", answer: "Hassan Fathy’s 117th Birthday"},
+		24: {pic: "https://www.google.com/logos/doodles/2016/william-morris-182nd-birthday-6264940497207296-hp.jpg", answer: "William Morris’ birthday"},
+		25: {pic: "https://lh3.googleusercontent.com/q_OQKbS9cSq7_Vq3M-dQ2rJhPAeuKCWzj539ZRf6omOF644ck2IamwOn3UW7KPel5fsrH3sveZAaSln7i9_YF9J6jFmNvK7HtM2CmsNW", answer: "Greece National Day"},
+		26: {pic: "https://lh3.googleusercontent.com/SjTvNpHVmrMS4yD91sooBJEpxmxLXBTmKRX3ehlL2noIstmAhacAO7nU5gC2DXLpUp-r-Oc1XHXpiX1cSokNZdOXhOvdLlH271nERg0", answer: "Saridjah Niung’s Birthday"},
+		27: {pic: "https://www.google.com/logos/doodles/2016/icc-india-v-australia-5699642525220864.3-hp.jpg", answer: "ICC - India v Australia"},
+		28: {pic: "https://www.google.com/logos/doodles/2016/doodle-4-google-2016-ireland-winner-5688214335520768-hp.jpg", answer: "Doodle 4 Google — Ireland Winner"},
+		29: {pic: "https://www.google.com/logos/doodles/2015/cricket-world-cup-2015-finals-5713507337109504-hp.jpg", answer: "Cricket World Cup"},
+		30: {pic: "https://www.google.com/logos/doodles/2016/icc-mens-semi-final-new-zealand-v-england-5678423504584704.2-hp.jpg", answer: "New Zealand take on England in the first semi-final!"},
+		31: {pic: "https://lh3.googleusercontent.com/5x1HuuGBwWtgIGUzUK-z8nfyhzX03niDeABca6OD4TQ0LyBAxELTraVLMW6ZChmWkRKDqHc9zVrC47LIIYm-eoFiIvHoOKeUZAOlPw8", answer: "Sergei Diaghilev’s 145th Birthday"},
+	},
+	Apr: {
+		01: {pic: "https://lh3.googleusercontent.com/JLlzxJKZy-x-WudsDQF0h8AEpoJYqKK5_5JdWH4eZ73MhjEgwaLguDp-etHpXbTUmVhhfaM8ef7HhQ3VcDThmnv8CaHY0U63nj3omQVM", answer: "Payut Ngaokrachang’s Birthday"},
+		02: {pic: "https://www.google.com/logos/2013/maria_sibylla_merians_366th_birthday_-1256008-hp.jpg", answer: "Maria Sibylla Merian's Birthday"},
+		03: {pic: "https://lh3.googleusercontent.com/7Y0IGkCAgOxmri4PDAaH2s9RLmQkB0KsCRchNPT-fM8EnmbEi0Pr8gN94zQTbysIGozzwCf5WLtXStlfUQLkhwwnYeAAdL5w2egDOwDTvw", answer: "Fazlur Rahman Khan’s 88th Birthday"},
+		04: {pic: "https://lh3.googleusercontent.com/fkwsp0yXWYPv7fuaf-41k82QeMYK-jFqMFDgGPq-7iOfJZog2dMCw57QeLZRp_mJPHjNhxgcXbX_2XRTP8A_aJOLSBpvSnswUBZi-Ko0", answer: "Chu Ming Silveira’s 76th Birthday"},
+		05: {pic: "https://www.google.com/logos/2013/arbor_day_2013-1688005-hp.jpg", answer: "Arbor Day"},
+		06: {pic: "https://www.google.com/logos/doodles/2016/120th-anniversary-of-first-modern-olympic-games-6314245085986816-hp.jpg", answer: "Anniversary of First Modern Olympic Games"},
+		07: {pic: "https://lh3.googleusercontent.com/WbZiQlZav0XFg8gXQkQzmaM94ZWaA5AHGfOxmALWVL7UKWj8Mlrbe-slgrp02iLGAog1oTV9WH__Wf0GkVI9Q7M0rOu7v-IXykCcLF0", answer: "Doodle 4 Google - Ireland Winner"},
+		08: {pic: "https://lh3.googleusercontent.com/5Hqsc44eWt0XYg73Uenrmak0Fn9w-plORSGiLXYaY8CqmYxHel15vmBFx9UzEOkNEfjaBlT9kp2NfcqMqAvKQhen6lqq-oQSSHFUTUOgQw", answer: "Mary Pickford’s Birthday"},
+		09: {pic: "https://lh3.googleusercontent.com/9u3v08kjmfMRx1PqLC5YFZOwqZZSJYrTXD7RGi3UpgxsQQX7-oNWUWoAym9dE-Y_1zi8WRPnCNfICjRofuY8l0c4UxQtMF5_955IA_w", answer: "Finland Municipal Elections"},
+		10: {pic: "https://lh3.googleusercontent.com/3b3kb1GxeJ2bYI0cRtIqrqdcOQXp1KioLxE3yAIUiKu0LXxqX92wHahhMWwwrJ74FpHwlhOzqJWRRMXpHbKjbFKLii6iRE6SrTwHeiWi", answer: "Bella Akhmadulina’s Birthday"},
+		11: {pic: "https://lh3.googleusercontent.com/HEJWekpPtY4_vWBir7W--zK3FW4IoILqDBlfXznsXhl2QsOr4473YT5xIlbxUar2754AaSoWFMqDApMjDI4DY1ZApoynuH-By0JPA_0", answer: "Misuzu Kaneko’s Birthday"},
+		12: {pic: "https://lh3.googleusercontent.com/7Kel1409dsgwqB7zD8YXAtMPmf061W1ia2gMSsLLTcj9MNiLWiwHlOxRRS5BORH9KRjHpzXdoksTjf3vmIcGv2f06ORYWHNuK5tqqZac", answer: "Children's Day (Bolivia)"},
+		13: {pic: "https://lh3.googleusercontent.com/wvVQk92m28LTkfSze7CZcx-6kpjv7mgHksOxjBM1zROw-OKs-RpuGTYWLaZvp1C73MwSW98s1Wfzj58F6WJhlOF7EeG7d2cnAZElEfZY", answer: "Songkran"},
+		14: {pic: "https://lh3.googleusercontent.com/byfNB_LxCmlIx1loqUNUwQNSFIjRKYnOoscqB_NH_loIuFzxr1ifbIQ-4jawU1n5MRE_e3yf2UbPRWM7he9ORwhPdLW-tc9sIKxjlsw", answer: "First Day of Bengali Calendar Pohela Boishakh"},
+		15: {pic: "https://www.google.com/logos/doodles/2016/samaun-samadikuns-85th-birthday-5640351287083008.2-hp.jpg", answer: "Samaun Samadikun’s birthday"},
+		16: {pic: "https://www.google.com/logos/2011/chaplin11-hp-static.jpg", answer: "Birthday of Charlie Chaplin"},
+		17: {pic: "https://www.google.com/logos/doodles/2015/cevat-sakir-kabaagacls-125th-birthday-5727594141974528-hp.jpg", answer: "Cevat Şakir Kabaağaçlı’s Birthday"},
+		18: {pic: "https://lh3.googleusercontent.com/US9STIIZR6Ey-TkIg1q77oLnIDANWKEJK9kggfi8Cl914R80QJcszYzsfkpclbf_9wNfrsWjsg4DU411hzGv2ZYvgatMHa7u-gNcUpg-", answer: "Kaimook Chuto’s Birthday"},
+		19: {pic: "https://www.google.com/logos/doodles/2015/finland-parliamentary-elections-2015-6255209265233920-hp.jpg", answer: "Finland Parliamentary Elections"},
+		20: {pic: "https://www.google.com/logos/doodles/2016/mohammed-ghani-hikmats-87th-birthday-5708620060688384-hp.jpg", answer: "Mohammed Ghani Hikmat’s birthday"},
+		21: {pic: "https://www.google.com/logos/doodles/2016/ra-kartinis-137th-birthday-5768297812328448-hp.jpg", answer: "R.A. Kartini's Birthday"},
+		22: {pic: "https://lh3.googleusercontent.com/3wo2eAoQjWugRjphOfgsouQHv7Sp5adkh3q1MkZmyIPBgCPbq_Y7WN7KEifoghBLx_vxFGfd9TEaounoeaecd5y9TXpOuwUH6948_Aey", answer: "Earth Day"},
+		23: {pic: "https://lh3.googleusercontent.com/_mgsFZvgs6TLkQsX0ctrWTIpHgCHfVXry44qlnuMMMeFpNzOWFWgA7G2fIt7XWAllc1a4lRMQnb66cnYzHaeULEWbDcZGv35WeGNyk8", answer: "St. George's Day 2017"},
+		24: {pic: "https://lh3.googleusercontent.com/dBF30e9NmGPL408p_FsEyr95HFIQd3P3XFRZzSvh4dGn5ggKpuTNP5YLwhw5mPB2BWpb0C5axWI9q0KiFq8b-Jk_0fZrt5h0mZvwCup8", answer: "Celebrating Maria Zambrano"},
+		25: {pic: "https://www.google.com/logos/doodles/2015/100th-anniversary-of-the-anzac-landings-at-gallipoli-5726709110276096-hp.jpg", answer: "Anniversary of the ANZAC landings at Gallipoli"},
+		26: {pic: "https://lh3.googleusercontent.com/iO-oXhaer_m3Q7DzL9cOO_P3_h1OL_A6vnvVcGC1h5cpoHq3McdY-OC-n1fvKqm6a7datRIPTSxQxLAsbLCWdWNAyF2SXYmXpSNKyg2Y", answer: "Cassini Spacecraft Dives Between Saturn and its Rings!"},
+		27: {pic: "https://lh3.googleusercontent.com/6KS2YSCa0X_c-CGPnOGRUWXzxGBf-YMGt6uOKs94G6IJlKI7UMbCDdcGwnTnMEa51ZpSLcM58kGq_oAT7OJaohEEO38SMZa2qZe3hxic", answer: "King's Day"},
+		28: {pic: "https://lh3.googleusercontent.com/t4WMbXp6qSY6HpL1zl0hJPSb_xxTMoMgFrroTK0x74oLgE_3KNXmUEpP-HEtQBJG94j0Z5d7mKXBciqUjWPTWFZ-BinIIPsV0dFOxUw", answer: "Marie Harel’s Birthday"},
+		29: {pic: "https://lh3.googleusercontent.com/wyeF_2wwEDE_ln_ZBDbWYHMFkfhFCHZuXG68UBqCrJEMdHmzG7bOuVJFfKYfK96FgpyO98XDNdkko4vEoXC2EpZYu_HA7jtQd7N9fPmc", answer: "Tama’s 18th Birthday"},
+		30: {pic: "https://lh3.googleusercontent.com/POsH-uGyipWg0oKOUks0SyZM8IR6Uso_X9FGdh1Ja_8QPlkvKXEQVBdPJweGKa4z1uoaFsLp7QCUo5wqlWbT9EHRPUeMJ45wR55SseA", answer: "Children's Day (Mexico)"}
+	},
+	May: {
+		01: {pic: "https://lh3.googleusercontent.com/ELgHqpaJh2F4pXaSVCy9r9o_nf4bul7WiCE3LzhAfNPGR_j5XZSOQjtv7oTELDXzMC0Wgdto9j4EYUieGdb8r6Env5A9kp8mRSK_S9jf-Q", answer: "First of May - Maypole 2017"},
+		02: {pic: "https://lh3.googleusercontent.com/31o8mqL2bsiXIVXVK7WK2Gmk1PKuGiL9NAFLHft6RwN22MsdGT3es4DFFJ_Pn_5Stshd5ojrbkWs-Q9PFEBtvBQTv0ILOBz-ir4f6ahpmw", answer: "Israel Independence Day"},
+		03: {pic: "https://www.google.com/logos/doodles/2016/teachers-day-2016-us-6296626244091904.2-hp.gif", answer: "Teachers' Day"},
+		04: {pic: "https://www.google.com/logos/doodles/2016/jane-jacobss-100th-birthday-5122456077467648-hp.png", answer: "Jane Jacobs’ birthday"},
+		05: {pic: "https://lh3.googleusercontent.com/dCZx2N7LdZnoMT926HWBx3EHvN48MyCp3mBONlFb8PaTMXW8omlXBybUqB0xKTsWdTb2fGpQTHfwPYl0ry9WsMER4FRc2-LAeemjk4vJ", answer: "Anniversary of Giro d'Italia"},
+		06: {pic: "https://www.google.com/logos/doodles/2016/2016-hockey-world-championship-5085766322487296.2-hp.jpg", answer: "Hockey World Championship"},
+		07: {pic: "https://lh3.googleusercontent.com/JNcXuJ4LSP3Frb9-z7hoSO2uZYcS3qnchKdggyOPaJjTsEJ5HMGZdbMNeGjbHHKE3-2evdM_MdZO_PDEQPpBGL0tF-onUskEu3QyRTBG", answer: "Mother's Day 2017 (Lithuania, Portugal, Spain)"},
+		08: {pic: "https://lh3.googleusercontent.com/EgReP7gZQRHKKWhxOVpJihQwxlHNdC9w8_mzLBHnizsjpimukjVM1mGYMS6UN6tXV9W-OgCAIJGn9hWcloYfYDBtA4fDWbRmJVd-hQoG", answer: "Parent's Day"},
+		09: {pic: "https://lh3.googleusercontent.com/Ydfbnb2_XzNTtRPZzVZqVNKxG0kf8H37ePHLImiSrdtFvDzO56dTQA17W26JCGqxcwoYnTt22mEo0WGuXaZ8JI53eTdOElL9345BVhFidw", answer: "Ferdinand Monoyer's Birthday"},
+		10: {pic: "https://lh3.googleusercontent.com/urbu4mTd21GsJcEZffcC7EOu4Qc4HVDZKvTNTOnklXaAOh1qGvVDelTEgEIquENYX3NCC8IukPCGYu-xIvrPcVPOh6rGzqL-6ZVOwY-0", answer: "Mother's Day (Mexico Guatemala El Salvador)"},
+		11: {pic: "https://lh3.googleusercontent.com/7MixLNTfyF0yXmEvB05ISD-2FS2iI974KCZVFRAY6VNw5ikkLkX3kgqUlRp-lpicaH-11fXO9mRzUVdksYJorGzISIOq485lpt_U59IF", answer: "Anniversary of Los Glaciares National Park"},
+		12: {pic: "https://lh3.googleusercontent.com/gGP8-Z9DQv-AR2e_xWI2nUU7BmN4Mbkhe02Nkr1eO5u6-zsW1DfvOYSTSWtMJ20NOjfAP9j6h0SsJBZflOWvgQz1Px2no8HxepYkAzAkrQ", answer: "Por Intalapailit's Birthday"},
+		13: {pic: "https://www.google.com/logos/doodles/2016/daeng-soetignas-108th-birthday-5181933908656128-hp.jpg", answer: "Daeng Soetigna's Birthday"},
+		14: {pic: "https://lh3.googleusercontent.com/77e2qM-EQce79BcByKmXdIilJiyXgQbjZozJr0IYXea8675o4bbtzvF4exSj-Br20NbTMgNRQjtBS8MzchBvEltIcbDuOG4L4L83UEElyw", answer: "Mother's Day"},
+		15: {pic: "https://lh3.googleusercontent.com/05ov6-zHKlpiiEhz3d4zzJplIf0Go_ZDKOMjEEBYEETQQ4aPvOqFWUaxxLuvOjMwpiyWJyp8t_-N6kKhQyjH_f5VLYbPh1ycoQhYcb0", answer: "Teacher's Day (South Korea, Mexico)"},
+		16: {pic: "https://lh3.googleusercontent.com/05ov6-zHKlpiiEhz3d4zzJplIf0Go_ZDKOMjEEBYEETQQ4aPvOqFWUaxxLuvOjMwpiyWJyp8t_-N6kKhQyjH_f5VLYbPh1ycoQhYcb0", answer: "Teacher's Day (Malaysia)"},
+		17: {pic: "https://lh3.googleusercontent.com/DhbDnbIS_Sq35uYtVSYlqyvL2i0CFrL3XfzdouleTjfZSlRoSXKTSfN_WF3r_JA7DeWIQJsTSK-N-12djQKs2LKToLqMaCjhVJzNkNr1", answer: "Norway National Day"},
+		18: {pic: "https://www.google.com/logos/doodles/2016/long-night-of-museums-2016-mexico-6002612513013760.2-hp.gif", answer: "Long Night of Museums"},
+		19: {pic: "https://www.google.com/logos/doodles/2016/yuri-kochiyamas-95th-birthday-5723472594468864-hp.jpg", answer: "Yuri Kochiyama's Birthday"},
+		20: {pic: "https://www.google.com/logos/2013/exposicin_universal_de_barcelonas_125th_anniversary-1546005-hp.jpg", answer: "Exposición Universal de Barcelona's anniversary"},
+		21: {pic: "https://www.google.com/logos/doodles/2016/long-night-of-museums-2016-lv-rs-bg-pt-fr-5721658301087744-hp.gif", answer: "Long Night of Museums"},
+		22: {pic: "https://lh3.googleusercontent.com/WsdjC8QyEwBdtTzD8ZaQFlrjCrbCAmqXmNLB62ZyPMhL4dmvp21JY1pMFAlyYWA9K0n9RQgFkphe20M8s6O6rzt76a6uMH6eUbKeYgH1", answer: "Richard Oakes’ Birthday"},
+		23: {pic: "https://www.google.com/logos/doodles/2015/eurovision-song-contest-2015-final-5679009119600640-hp.gif", answer: "Eurovision Song Contest"},
+		24: {pic: "https://www.google.com/logos/doodles/2016/suzanne-lenglens-117th-birthday-4885594774700032-hp.gif", answer: "Suzanne Lenglen’s Birthday"},
+		25: {pic: "https://lh3.googleusercontent.com/RoGvbuU6eKukVVg54QF5xlBDD1gK9Zp_z8aW4cL3OIOBjBwTD0T8mHeEG0bILGQESVaDMUYAul5VUwy5P_75vCFV3wcl-O3--9lYLjyKdQ", answer: "Father's Day (Germany)"},
+		26: {pic: "https://lh3.googleusercontent.com/wjjH_wWqb7yiQvQ6sb7fpdz2n-c7KwP_eDsSBnaZoSitf_02JqvOD5euynzA6UGFPyLMtZwBGy2i6_eW2bH83cV0s2bRXarKpeRqAYo", answer: "Mother's Day (Poland)"},
+		27: {pic: "https://lh3.googleusercontent.com/Dg0PFMtbE0oJrHDX_SkSBJFQDux7b5TggxqyGw9UOzTyLWvH8SCVoIvHQPqsMzOspluouluD5f3M3ZlSNAP5_FT82Bp_1sD3-K5ce961", answer: "Mother's Day (Bolivia)"},
+		28: {pic: "https://lh3.googleusercontent.com/OUg9uF7ZXVWEOqaW97uhthYRbwYkQ3NBfdLYXqfl1W3al320qSSFiQvim1vzP3V_gQ-XoFfLtrG1QgonOJPC_3vY83QIsY5b6xlIS1ai-g", answer: "Children's Day (Hungary)"},
+		29: {pic: "https://lh3.googleusercontent.com/frTsCFCaxFL94BUAbfPj7P45ylU5FpzZ99jIGbMXiZ1NmCHSi0peiv95ZsBfo1k1hkQ2_qhdhXPmhG-B58scIRz5uNOIqWkYOf8Tv_Rt", answer: "Hibari Misora’s 80th Birthday"},
+		30: {pic: "https://lh3.googleusercontent.com/t8OiwKBR9LhjuRjtJQ56pNLTiU3o0HL-DnmB9CbQXSk0hWuzdyk1BexAoGbq9P9gch5PcGuj9fA3LweNNUZUE7UEJaIdxF5XpU0r5nRK", answer: "Dragon Boat Festival"},
+		31: {pic: "https://lh3.googleusercontent.com/UBe6UXWawB56aI7Y0ZB9-f4yD_k7URf7X6xDYdEvJvIHMaOfRxeLFo5t6ouhGVZWvTlPCobQAbTBrsTwGXBPlugrC8SpSE7fHWKyfeOSpQ", answer: "Celebrating Zaha Hadid"}
+	},
+	Jun: {
+		01: {pic: "https://lh3.googleusercontent.com/Y9Y1PEUfg_2IBnYz1qvU_a4DFW8CfWMgqdxuOLMLUZqhfN1qyNKWWTIncHhKVIjND2PYAnmx9iDNgrCPVcHtH7Y-csjtQtvCMR_OW-Qt", answer: "ICC Champions Trophy Begins!"},
+		02: {pic: "https://lh3.googleusercontent.com/YpBBzF2p8fOLRPKlE8V8_GACC-6WpXWEFqRETuoX7oQyd9CyWVzQEFTa9L4BIhz24icnRE1ryPVZg626yOx1J1NyNsvJLdR2ft7RWwdD2g", answer: "Lamun Yamakhup’s Birthday"},
+		03: {pic: "https://lh3.googleusercontent.com/nklUfdmFTLMsOgkSxjvtQYyR6qmgvgra9H9l2cWuZrQGEbdAKAeGHgjsCWmqyO03yRIj-D3Ofe1rb_K0ZPWUqRDsZ5qMIoXTAfCU2jpB", answer: "Josephine Baker's Birthday"},
+		04: {pic: "https://lh3.googleusercontent.com/rQeotYdfYIfyYUjs2xPzikyHy6yWDtSxBgrvNrJVEvgoejapM4bbdYv-PFfMe9lJ8XB5pOXpYjtTR2BVO1fvjnQ0ftw6qdD2rCQXHQY8", answer: "Nutan’s Birthday"},
+		05: {pic: "https://lh3.googleusercontent.com/zTAGQK-J8ykaHf_a1aac3-oD0C563aE2f7wS40_dXoy5h1FZjFr36Y2W8OvorQ2H7faMAib-04M71YAOa0HLbBaxmovc09zHnZ383lI", answer: "Denmark National Day"},
+		06: {pic: "https://lh3.googleusercontent.com/x2OXeTSRH5ax6mMoFM_9BmsWfucjIRMMFXrIHjZHCUJjcAKHV0wf8C2LiVzcy_-qtl3L8ONBdixMvRgAqJjmneMCvL7Vr6DaNYV2K2hd", answer: "Sweden National Day"},
+		07: {pic: "https://www.google.com/logos/doodles/2015/mexico-elections-2015-4761871257174016.2-hp.jpg", answer: "Mexico Elections"},
+		08: {pic: "https://lh3.googleusercontent.com/fCIlHWAUgQ1u-PLC2rsDRTq93j6e8ECWAl47OT8e3tpejCW9NPBEr-bib5myUp3OpGhiAw-Ni7pT16RilMYRPecUoqOPE6ziONSwHxc", answer: "United Kingdom Elections"},
+		09: {pic: "https://www.google.com/logos/doodles/2016/dragon-boat-festival-2016-5688885083373568-hp.jpg", answer: "Dragon Boat Festival"},
+		10: {pic: "https://lh3.googleusercontent.com/165W3T-UPtjrFu8Du0RlxF7_EYV5x00xx9UlTBH23GeldMkomlyoD0JZa87PlzgUlF0jRAELqmu48PzctwpwjjPBxFhanZULQi0qPVU", answer: "Portugal National Day"},
+		11: {pic: "https://lh3.googleusercontent.com/zti5NAEBnKEGIZABpebbvth5B5dVU1T_q6e5bDrnP04LCDJSmSYXhecSsV09qf8VlViRrvwk6MdDyTEz_iUgcNHG2e9Xf_KR5UjgWb1h", answer: "Father's Day (Austria)"},
+		12: {pic: "https://lh3.googleusercontent.com/aD82H9GsgHsUXpmqcRToIMPzyn4siD-IxEp7hJhNy-yjAdhQQ2iVJhjb4wLo4T7tIM0uxgdFWWcqsjVIckwhskrsBFYsmcMxETDOUSI", answer: "Russia National Day"},
+		13: {pic: "https://lh3.googleusercontent.com/27L0ZruJU5RlaMO3oXPN8TSCpZySWUZ6Vdq8R8vuDcUY69jBe3oPDaSOB5Wk3zyX0OpkPAfqkUROX1yaZTd7cPgXz9dekfw1vLCdWitU", answer: "ing the ICC Champions Trophy"},
+		14: {pic: "https://lh3.googleusercontent.com/2HUcDHDTNLOk9AIX_v9f93KM8FJq3okTJ7ZoFsP0nsE6ZYzymgxpzlRLclEtzPlAy1IuUfkFHh9pKZujbL93eoL4uYx0F3ZYKcsNiJw", answer: "Doodle 4 Google — Canada Winner"},
+		15: {pic: "https://www.google.com/logos/doodles/2015/800th-anniversary-of-the-magna-carta-6274258384715776-hp.gif", answer: "Anniversary of the Magna Carta"},
+		16: {pic: "https://www.google.com/logos/doodles/2016/karl-landsteiners-148th-birthday-5693101206142976-hp.gif", answer: "Karl Landsteiner’s birthday"},
+		17: {pic: "https://lh3.googleusercontent.com/2dpjjPIc3ubjWizXTQ5ckdLMg6x3pEc2uCkNVZe6B12V2_VTY47-_BOi3vvODJqxZfl7MrmuV4n1SWlh5lYdeDIVCH0w04_yZllpfKTnoQ", answer: "Susan La Flesche Picotte’s Birthday"},
+		18: {pic: "https://lh3.googleusercontent.com/s931fvCESo--U9N-5MCf5ev0QPJSJZw9XMXS4QgzRwBxo067VhAWEdDWvv3R2SkvroIym_Y0CxmSmB7per946wlBGncRWW2Id6Xva_Q", answer: "Father's Day"},
+		19: {pic: "https://lh3.googleusercontent.com/zyFvu5bdVKHloUDVqPgaQ4ICaKaQO32lDl8vJXv7OHSSGT2MeMtLlSLzcY_cS7yf8BPIYy1qtsWDFA4KyHHqmbeKJnQKiYX_abn1BHr3kw", answer: "Mudik"},
+		20: {pic: "https://www.google.com/logos/doodles/2016/first-day-of-winter-2016-southern-hemisphere-5747795249070080-hp.gif", answer: "Winter Solstice"},
+		21: {pic: "https://lh3.googleusercontent.com/GnasWzsvL2yU6WJmAAHUqCG5yG0lr2DnCKbXf9K5HSFV8bvh4e82za0Orrcy7af3FUCMITTNoiX1KXFDIi3pfhtwiU6GyRfDsXHbPpk", answer: "Summer Solstice (Northern Hemisphere)"},
+		22: {pic: "https://lh3.googleusercontent.com/EnsZNBNXgafXAFWN0sQJ43vufZlyHuLc80WzqEjQd8SFKAYU9RrrPHKoXwMxZtjaEKB-Ea2WB3ZSleQf8w7NxkZpxQmH2sV_hev7djI", answer: "Oskar Fischinger’s Birthday"},
+		23: {pic: "https://lh3.googleusercontent.com/PbR_Zdk8Rl5tUoBpDBzBUSoAueRVm2CRB46DtzDWMx1Incr-PgC0dC1cUBDCMhQMKIB00srDbad-KqMPu4GQiMGda0Y_onoeAFSZ7V27", answer: "Hokiichi Hanawa’s Birthday"},
+		24: {pic: "https://lh3.googleusercontent.com/nYm_2KwViXUHWb_F8d8NczBMqq1ohEN-6k7jCSkKzAGKZWrXMG1OvIRlNeAvxp-YjVu8zkYGyvMCFBnDFg3nvX2abUOHr9mfzFz3NItU", answer: "World Taekwondo Championships Muju"},
+		25: {pic: "https://lh3.googleusercontent.com/gbm_-G4XzSolhKfUZ_CU2IVfFcCdFYTR12boXzU8rduSR3DCMEfCKwSRYxooywaF_5eqqWYSrzwJ5ia6Wt_qPWprjoMJTTS4EIyI8p96", answer: "Teachers' Day (Guatemala)"},
+		26: {pic: "https://lh3.googleusercontent.com/1gaNRdsBhFq-aco7SnKxHfcxvCyKvR19RBpa8dPfRH0ela3_0dTX9uIJF9K-CHKALO30vm2hbAwb9A_JTsJ28kOu76ZUth_gij7VjP3SZA", answer: "Juana Manso’s Birthday"},
+		27: {pic: "https://www.google.com/logos/doodles/2016/r-d-burmans-77th-birthday-4882888807940096.2-hp.png", answer: "R. D. Burman’s birthday"},
+		28: {pic: "https://www.google.com/logos/doodles/2014/world-cup-2014-38-5231579957821440.3-hp.gif", answer: "World Cup"},
+		29: {pic: "https://lh3.googleusercontent.com/HSgo7F0suHYs0omyOMhojrIHb1uTZenpKZMzuUJzWJHeinybgKYbn_Vx5zHojM5gCGX4JZ9B7BKuTWj25EhMRJyK1UA-lfSDZ_KSKvzs", answer: "Teachers' Day (Nicaragua)"},
+		30: {pic: "https://lh3.googleusercontent.com/ZCVKXNrmulLNywEj9AbszqowI4RxALnC1g3M0PLXWYtCfuUwW0himrz0sAAkngLE_NAlo6HNXB1EKGOO08Qtvb7GeHagldOBdTu-bG9aBQ", answer: "Syed Sadequain Ahmed Naqvi’s Birthday"}
+	},
+	Jul: {
+		01: {pic: "https://lh3.googleusercontent.com/81ozUtK1Su4Zx7gFEhkPIuj6b7olSMJUTjyQnXyNPzXZqL21PAn4Oe4pYfm990oPaZqQRFcUpZbNqArv0-yD_ZEccnwqxXte0_Ic1qIN", answer: "Canada National Day"},
+		02: {pic: "https://www.google.com/logos/doodles/2016/2016-australian-federal-election-6321750527705088-hp.jpg", answer: "Australian Federal Election"},
+		03: {pic: "https://lh3.googleusercontent.com/0FwGwJ1M8wdW9-PYXJjr9g191zGJZrJ68hgJpUwTMECBMlcaHnox-xf4jLdyupJmwl5hE9tqZPF3XlEZRZDTsNsnpYBXLd5TAKmFE8o", answer: "Natalia Goncharova's Birthday"},
+		04: {pic: "https://lh3.googleusercontent.com/3CWrZXmJLtRkWcURm_e0Hwyy9zul8PaV9nV45pdRvFhOYO3UGxJtEfJ6Hh64LC7sERqrAj9BynTt6mUh8znbEwvBraHzKiaxuwRwcS7ZOg", answer: "Fourth of July"},
+		05: {pic: "https://lh3.googleusercontent.com/rJpPyqcd65-E7LUKBcapaq8EsFgJC4IJa5tQ_Cg5hDRkD4x5fPej267aXFtDfrxCRA1BLPBUlGwJ_gCWP6XvfyZMtcJVnORPT8w8sSs", answer: "Venezuela National Day"},
+		06: {pic: "https://lh3.googleusercontent.com/1dORmy3IsLCfgF0enBbSlztRfqhatLjDAw43_RrPXExHL9PH1rGo3NsgfC8FEumBfTNTB3AOp6pyt-w88BHRl-qgG0HYe9Auf_FgFaSx", answer: "Teachers' Day (Perú)"},
+		07: {pic: "https://lh3.googleusercontent.com/WNRsWKHpoMc0_pfGDJhciK516IURmxYBeywqEnZaX8eP71HBNA49owSOwXoh_uEqYDVWXqVEvRj9Q6poHjwQ4irKOsRJnBtiFjrU7W5Z", answer: "Tanabata"},
+		08: {pic: "https://lh3.googleusercontent.com/GqZVwQqsoTL5sIXi0oonAtszsnAo0S7HVlSEcCFRhumh3BB-u6rNXqVBfGej92tAXKHLYFyCMeGHi2xEdxQWBTETJ1F-l_gpRPvaPXSEcw", answer: "Käthe Kollwitz's Birthday"},
+		09: {pic: "https://lh3.googleusercontent.com/vA0xj0WNDu7XacBdrRAoJ4IVALMwP7DA69bC2msCGKf4ZE3PSz4YQKNKxmCd-djVbxy-8CsRnrLEZ0IWXutc6x8zcxV_WIK-yLb4do8z", answer: "660th Anniversary of Charles Bridge"},
+		10: {pic: "https://lh3.googleusercontent.com/NZnlRDqkuGtw6Oe77eB5fnaw6uELdRSawwYGTHQ3-fkU8uioObdCzKP9Az4EcgEBhRPoZrOoX95bmKPN4JibB5t_HTXqX0EZfVTi9QCv", answer: "Eva Ekeblad’s Birthday"},
+		11: {pic: "https://www.google.com/logos/doodles/2013/anibal_troilos_99th_birthday-1989005-hp.jpg", answer: "Anibal Troilo's Birthday"},
+		12: {pic: "https://lh3.googleusercontent.com/zL34d6KnwkwMD3Y9HkgX7M-bQ-OrVKnAt4Ecx46SJqJZz6xcpwAyaMitayljS06SfE66nFIRZVSC6PcDBrp7kJWDHOyJ9xBhDPp0YXs", answer: "Tayeb Salih’s Birthday"},
+		13: {pic: "https://www.google.com/logos/doodles/2015/ehud-manors-74th-birthday-5758352818700288-hp.png", answer: "Ehud Manor’s Birthday"},
+		14: {pic: "https://lh3.googleusercontent.com/Z77rrFXYw0FWdOjiKMQkv4pMUsU3LnwIuuttazT7HMeFn5aXlXAWp73CAo7qhiumTiilncEiQt2p09PaJrysIkVe_fNnX2i0gQymdR8", answer: "Bastille Day"},
+		15: {pic: "https://www.google.com/logos/doodles/2016/roger-raveels-95th-birthday-4843897568100352.6-hp.png", answer: "Roger Raveel’s birthday"},
+		16: {pic: "https://www.google.com/logos/doodles/2015/ida-b-wells-153rd-birthday-4853060954226688-hp.jpg", answer: "Ida B. Wells' Birthday"},
+		17: {pic: "https://lh3.googleusercontent.com/AX_6aLoRAevS2Ch7Q9ycG60GHVR3_ywuZR9uYq9VrJBEo1L58CphK3k4l1XvTKklpjOGyYqe2Z0Q2xUSuOl2Cvhi6seOLb9asqaWtBbX4w", answer: "Celebrating the ICC Women's Cricket World Cup"},
+		18: {pic: "https://www.google.com/logos/doodles/2014/nelson-mandelas-96th-birthday-6237483310252032-hp.jpg", answer: "Nelson Mandela's Birthday"},
+		19: {pic: "https://www.google.com/logos/doodles/2015/childrens-day-2015-panama-6281767111622656-hp.png", answer: "Children's Day  (Panama)"},
+		20: {pic: "https://lh3.googleusercontent.com/IAOta3Q0fRBK0xClfCv3F6h-GxuPDsBp49qq0lKxamKciZ6Ln00oBNWBPLwNzm-jtCoyuAT4g8aQeEr4XJfb7ApZW4VokHuK-7pYoYc", answer: "Colombia National Day"},
+		21: {pic: "https://lh3.googleusercontent.com/TIWGo9JGxgR8CqAwHy8hlt2D741liqre2cERu2Yb-YmhSJG2mYcVhUSfmMVQxNla2sc4zW1lTBEfgCNRcBUT9taRUT6C8dvqUMrkQzVUbQ", answer: "Marshall McLuhan’s Birthday"},
+		22: {pic: "https://www.google.com/logos/doodles/2016/mukeshs-93rd-birthday-5916316771811328-hp.jpg", answer: "Mukesh's Birthday"},
+		23: {pic: "https://www.google.com/logos/doodles/2015/childrens-day-2015-indonesia-6506283523899392-hp.png", answer: "Children's Day (Indonesia)"},
+		24: {pic: "https://www.google.com/logos/doodles/2014/robot-taekwon-vs-38th-birthday-4912252578693120.2-hp.jpg", answer: "Robot Taekwon V's Birthday"},
+		25: {pic: "https://www.google.com/logos/doodles/2015/special-olympics-world-games-2015-5710263202349056-hp.gif", answer: "Special Olympics World Games"},
+		26: {pic: "https://lh3.googleusercontent.com/ygwQAQvJyVLDacx_BnElptC0B1Lbjd_FCIbyhMFdNp_uPllsQwKlOUuNi8pEFKe2xjBkYtMoRlb-doDgblh5G058eOYh3XpLcRdLOhDOTw", answer: "Grandparents' Day (Spain)"},
+		27: {pic: "https://www.google.com/logos/doodles/2016/ounsi-el-hajjs-79th-birthday-5737296668131328-hp.jpg", answer: "Ounsi el-Hajj’s birthday"},
+		28: {pic: "https://lh3.googleusercontent.com/lAZ8y5rTSx8UbhmurrmQa8RAiFgwzDAOLvPlbm_P05C9_CIa35MXFQukRgDG1jsSCiBLPndyu4j09o---W6kTSFNhOCC4jR8tdx9mg6LuQ", answer: "Perú National Day"},
+		29: {pic: "https://www.google.com/logos/doodles/2013/national_thai_language_day_-2003006-hp.jpg", answer: "National Thai Language Day"},
+		30: {pic: "https://www.google.com/logos/doodles/2014/farid-shawkis-94th-birthday-6482832192962560-hp.jpg", answer: "Farid Shawki's Birthday"},
+		31: {pic: "https://www.google.com/logos/doodles/2016/fathers-day-2016-dominican-republic-5711823737192448-hp.jpg", answer: "Father's Day (Dominican Republic)"},
+	},
+	Aug: {
+		01: {pic: "https://lh3.googleusercontent.com/cHQwcqTZ7963iN5lRQo63oq48bDl1JkUGnmfSLSgkvBKB7hEHFby8w84jGFy1SFWxMPnVub7ZRU9Yr3Xw0Zpg9w0jSarTttr8ayt2Ns", answer: "Switzerland National Day"},
+		02: {pic: "https://www.google.com/logos/doodles/2014/qixi-festivalchilseok-2014-5717788031188992-hp.jpg", answer: "Qixi Festival/Chilseok"},
+		03: {pic: "https://lh3.googleusercontent.com/3Vc1eb0h4n1JdmvSoxzPp8Flqn1lwiqbDGVDkPmZg-lDU-t0inBelUlaPkfNEabT528pQEncq8YGEDjWwroTr5wOyh_LrD6X744lwWXooA", answer: "Celebrating Dolores del Río"},
+		04: {pic: "https://www.google.com/logos/doodles/2014/maria-zankovetskas-160th-birthday-5585689223626752-hp.jpg", answer: "Maria Zankovetska's Birthday"},
+		05: {pic: "https://www.google.com/logos/doodles/2016/2016-doodle-fruit-games-day-1-5714532771037184.3-hp.png", answer: "Doodle Fruit Games"},
+		06: {pic: "https://lh3.googleusercontent.com/042VhjWvi8A7nDSpyGdf9Nqoi9WSqylGPmsmmRMIq25MT5_0CccPuwW5TihyEXXCAlpG5CYJFMTvEuJsSdKXUMyMsuBRoRDjumrrUs6h", answer: "Children's Day (Chile)"},
+		07: {pic: "https://lh3.googleusercontent.com/8i-kI8HD5MHzHPyUctLDOOCnWSXOKF4KZcTr60dgjc9rirm-HNjkHNtlkheWuEdNlipB8RzjSzvpPcWZQc8lD18tImimw0U28MrCaymO", answer: "Tu Be'av"},
+		08: {pic: "https://lh3.googleusercontent.com/tco8qN_csvhFZA_ISqTb-Uo_KoQx60WVWaFImUB59yq_BJrZBxk6FgWO0zERO6PsOyiQaVFSebSXYLRzja5_EPVgog9y47yXAuTR46YLjQ", answer: "Kenya Elections"},
+		09: {pic: "https://lh3.googleusercontent.com/uwa1nQLsQaWhNZlZCM96rZJ23yt6DHEPbiSsG-ANquE57dEHAKqftWlswdlNVf68s2gfd-Mnd0HUw29dB3-j1-b69fmbWriRqYZUkaOh_Q", answer: "Singapore National Day"},
+		10: {pic: "https://lh3.googleusercontent.com/L3rvmcVwUGh-gicMsJqGS8XoFMsGvMzlFgf754iEWw_HVzcU5DBTFo9UvbRcW8MpiFzeG3lUguZklxfLESIFlbtShFJAz9NhcEO3xVE", answer: "Ecuador National Day"},
+		11: {pic: "https://lh3.googleusercontent.com/UdxMpg4NuVoARqNlZGVSpzHKRvW3e6vQzTTWl-wvdRR8knG5gN3PhcCVgWdOq-a3GbOpFEOzq1y7cuC0CN9_iMG4htOO8WHaMdKrYNY", answer: "Anniversary of the Birth of Hip Hop"},
+		12: {pic: "https://lh3.googleusercontent.com/gdah75N74TyiBt6lC_aX9OjQce2LLTcd4QeA1CtWSuDZViWEPRUvjwZHpLHy0QCeVjgDaGFmbAEk4xLxtB3L-ng581QM6u8ED-MjevVIKA", answer: "Mother's Day (Thailand)"},
+		13: {pic: "https://lh3.googleusercontent.com/lsnJZhkxDFtWp7xYcIIx_KsnXMu34wVLEYKEB2SVzBmQYsqnZJMwTGKTxnvZw6fBYf7qJGEpxAFzTGQgiOdfGQcQle6kH7440CCItlk", answer: "Father's Day (Brazil)"},
+		14: {pic: "https://lh3.googleusercontent.com/geUNZL2JnHcQMwglmnQnIBAmc7cOWID7BMmN3_tjDLpi8B2mDBiM0Jzx_spIfHSmlweAmlvEzXWKtavh7iDirvFbs-2-CBOTYX-_ALIBJw", answer: "Pakistan National Day"},
+		15: {pic: "https://lh3.googleusercontent.com/CtHZuwq4wf9-i4FUGOS6qXMaC-coMdPw5DZy14y6UWa3W_lrNuBgCy8SFtUTCYN5_Gz9ZYyRUam2zVuT-_9K_O9b6oAl6tHMAylw-s5j", answer: "Mother's Day (Costa Rica)"},
+		16: {pic: "https://lh3.googleusercontent.com/Ll-mTk2TBDwTEhYe9PDjTbv0f6ewrK0qexHyChw6NLmUIRjkM1i8qGeXEC7LwfPMb6U4gBp7Bmyx4qE3kWdXs1Jf4vgF1_vNMCYCafRAlA", answer: "Tina Modotti’s Birthday"},
+		17: {pic: "https://lh3.googleusercontent.com/KFMmKNveyUx0zZ4xlYAQ3Il1OFPLuyPQc9IKnTrNK13C8EmFbr6TJvhV8D_onOtUiy97aK-lHZ3JbX01oo9I9ZsT6pN8Bbsue4JEEwo", answer: "Indonesia Independence Day"},
+		18: {pic: "https://www.google.com/logos/doodles/2016/2016-doodle-fruit-games-day-14-5645577527230464-hp.gif", answer: "Doodle Fruit Games"},
+		19: {pic: "https://www.google.com/logos/doodles/2016/2016-doodle-fruit-games-day-15-5673550515011584-hp.gif", answer: "Doodle Fruit Games"},
+		20: {pic: "https://lh3.googleusercontent.com/KCbBAnSGtj8ASUePZJN2Oz7c-mVXGyWmOX-kWDqJf2XFSoU00vsOT1MjS3MrpAqVVYAJl5WR6mqIMI6bht7KQ7NwP_psu31AL63KanOD", answer: "Cora Coralina's Birthday"},
+		21: {pic: "https://lh3.googleusercontent.com/UJrVYXefczmLBsTfZj_jbkHTnYEsW6VIa5XMXQDv3jJ1H8fopmU_ek9j3xJEvXmdMUr2ZM2l_dRnnfyzlKERla5NroDnXRa_d2bdlv2L", answer: "Great American Eclipse"},
+		22: {pic: "https://www.google.com/logos/doodles/2013/claude_debussys_151st_birthday-2009007.2-hp.jpg", answer: "Claude Debussy's Birthday"},
+		23: {pic: "https://www.google.com/logos/doodles/2015/mundaneum-co-founder-paul-otlets-147th-birthday-6289659063697408.2-hp.png", answer: "Mundaneum co-founder Paul Otlet's Birthday"},
+		24: {pic: "https://lh3.googleusercontent.com/CAFRlc74KvMTH4gSytJjpFqNrFeunrL02aRMuYCN2liJ3nS7yOVRBdsdXaoLSj2YSdtLO8A4IXPPMZT22Rd0M1jczX9-eMv9-JgJ1xE", answer: "Ukraine Independence Day"},
+		25: {pic: "https://www.google.com/logos/doodles/2016/celebrating-us-national-parks-5745578282582016.4-hp.gif", answer: "Celebrating US National Parks"},
+		26: {pic: "https://www.google.com/logos/doodles/2015/la-tomatina-70th-anniversary-5748008186544128.2-hp.gif", answer: "La Tomatina Anniversary"},
+		27: {pic: "https://www.google.com/logos/doodles/2015/halet-cambels-99th-birthday-6544342839721984-hp.jpg", answer: "Halet Çambel’s Birthday"},
+		28: {pic: "https://lh3.googleusercontent.com/DJDSthVcA0JGminejsAZoRc4_pkt-tzOwSg3Qx97TB_EJS-A-EE5asVvuvuR8bffSoHvMsuXJ06W_P4ZMtoimPKjv_P-8WyyiQxjWPo", answer: "Qixi Festival"},
+		29: {pic: "https://www.google.com/logos/2009/michaeljackson09.gif", answer: "Birthday of Michael Jackson"},
+		30: {pic: "https://www.google.com/logos/2010/maryshelley2010-hp.jpg", answer: "Mary Shelley's Birthday"},
+		31: {pic: "https://lh3.googleusercontent.com/1LeVaPmM7okfRQPSwom6fpofclKIfHTBWs5bqpXzUn5z51gMKfL27IWzUr9swNPTvTdVEU9p22EtDidVgnRyKBFkhc1nVQuq3v-cqlY", answer: "Malaysia National Day"}
+	},
+	Sep: {
+		01: {pic: "https://lh3.googleusercontent.com/AAq-aGYMhuesNu8IS9j6uogdPsmCrp8WDHHp88cvHGVY3uk5Kq4Bt5Z2YUzqJX0ngpM_dIiW11IPTFB0oIwT8Wobd2FRGAaH4bBDjgk", answer: "Uzbekistan Independence Day"},
+		02: {pic: "https://lh3.googleusercontent.com/1hD25XzqIxeP-UmI2kvUXUEtfZO3I3gT-FeDwStUaMyy512EIiTVfJNyTD4iQNJ4pWrQFIgepLyYc9Hf0Rn5yXQ4OYjAgqAL1i1tr9Zj", answer: "Vietnam National Day"},
+		03: {pic: "https://lh3.googleusercontent.com/Dd-ityTL8ouqu7MsnuCqYudIqZNm2CH3pVIPEBPYve_3-6_IJYpTfgpp4tpnfAmR4gdi_Qm8zEP-MqyCx---mnOI2nEaEKiUnVwXc3O2", answer: "Father's Day (Australia)"},
+		04: {pic: "https://lh3.googleusercontent.com/gHURVRlEe7YcY3m7oKPHAOWT2INGOkKM6bpeBk0blH-Yw9NdXaLPhkek1vf97JOBvwWKJgipQMg72IKVWg2EZ1D5_7OqzQ-JtifAAK4", answer: "Labor Day (United States)"},
+		05: {pic: "https://lh3.googleusercontent.com/afXO_DezQ5hkMK6dxFFgFdU5WkIy00HtqAeRzvaGy8etfHoZG6ySHTt8CMfgCa5uwzf5CQNJUfA2tEzube_MO4UJzcIYo3cCuBXg9TdLYQ", answer: "Teachers' Day (India)"},
+		06: {pic: "https://lh3.googleusercontent.com/CYz851XKMvMCEY6D0_IoOIu5uvFTVJW-AhQpSyvqz14Tk1Iq2L9ZVZKFjWA-e8CFSGw6VUFpcEHtgueLS1L3BLgXNSOvMHMXsahFjWFw", answer: "Celebrating British Sign Language and the Braidwood Academy"},
+		07: {pic: "https://lh3.googleusercontent.com/XOC4lTiEWPSVAnvtR3ZH98ClZJCSF8BlnaYcCQvOBxTHXvTqs7m1niE-0r070xPU4zgaPyzPGMyoie-VdqBZspwM__Zx-QSXXVNwf490mg", answer: "Brazil National Day"},
+		08: {pic: "https://www.google.com/logos/doodles/2015/first-day-of-school-2015-canada-5183141320851456.2-hp.gif", answer: "First Day of School (Canada)"},
+		09: {pic: "https://lh3.googleusercontent.com/3ua73QGf_KNnEtYO5zrxlcyfIqmAieSzJ9EKwEERRJH3sF9Lq2QAnsgDVMfuzDVm1MHvIIsEGwz-reoL1flKs_Pwtdq3wTKZQeQEwwfbjQ", answer: "Children's Day (Costa Rica)"},
+		10: {pic: "https://lh3.googleusercontent.com/FBaOjYcn0pl8ByaTMq_k5hVMawnfomvDtgBd8CO5UHDQqaIiHrkWPN6JEXWuCVrck4pRXOdF9lLR9sRIPwskeWg6LlGPwcpKhCfZL9dL", answer: "Absentee Voting Reminder (Germany)"},
+		11: {pic: "https://lh3.googleusercontent.com/T8haXNDiCZtfK-KNddNvORofj_EBbgFN_AwJ8TzLYh7B9ANRrgJLo63lA6kiL0rEeeOypqZnOBjcCF2L8WSIKXW6zhr0r-fCFic93xQZ", answer: "Teachers' Day (Argentina)"},
+		12: {pic: "https://www.google.com/logos/doodles/2016/takizo-iwasakis-121st-birthday-5727987413549056.2-hp.jpg", answer: "Takizo Iwasaki’s birthday"},
+		13: {pic: "https://www.google.com/logos/doodles/2016/yma-sumacs-94th-birthday-5639073181990912.2-hp.jpg", answer: "Yma Sumac’s birthday"},
+		14: {pic: "https://www.google.com/logos/doodles/2014/sweden-elections-2014-6434215847526400-hp.jpg", answer: "Sweden Elections"},
+		15: {pic: "https://lh3.googleusercontent.com/JV3PJTpUOv226TvdfNIgrlKaBdYu6sUI5VWxulaDmk_9R3a9h_zikTcHbEnkiulyq_Gm_XxeRsX66ViXYJqzGiTPxXn5i4Eeui-VkHXj1w", answer: "Guatemala National Day"},
+		16: {pic: "https://lh3.googleusercontent.com/FoJ-HvzS4bqJI0tZuvGOJlp28Xju4CIcJYGpANxtubIVanhFTOj7yfaoUhpa_mOy0LAdTcRNmh9BfQCJ8nNBBXnGBMcTuu4Vkd2D_weL", answer: "Mexico National Day 2017"},
+		17: {pic: "https://lh3.googleusercontent.com/vRgvc1uNzUepEyHPnsfRlVVItOBFmcrNZ2lnuEKsYhjuuzMbFTp3Pu-frxdJJlSs9Ka_wqQHr7zaq6RmmV1iiLbeoDZvSjK72Ze-JY1ELw", answer: "Teachers' Day (Honduras)"},
+		18: {pic: "https://lh3.googleusercontent.com/RJ_0Ki6gC_t3fFySx37kCq7-1g-TULpDtuil-jnGeG5QYVf6fuqWLgf_gHgpBN39XT0cPz4Dg7PrJ5RjhJe8k84GKDEeISNRCeXdV_JW", answer: "Chile National Day"},
+		19: {pic: "https://lh3.googleusercontent.com/-7QZJpOlfG1DoMgpZHBOm6HDm4BnyiDUUUJzEvVIbOIqFpVpFeqdoNeN3J-u3KhohLwR4ccSOd7Gh45VIXjAnksqkotN5_7zVmY8peD7", answer: "Amalia Hernandez’s Birthday"},
+		20: {pic: "https://lh3.googleusercontent.com/lGMSSlvSxn35PNzMM6FsKDgKeO2ku_F3_3UNEwK7W0TDEnN7Wjjvm7-ZBaPzujaY-WsAgvoh0Asb81xtmhpnP-e63FjZOmTaB3fQvtCz", answer: "Children's Day (Germany)"},
+		21: {pic: "https://lh3.googleusercontent.com/NNzoduy19MFdf4Ub3Ih4Xjce-BL8xznUj2VArZufHo-rdxnkjdkbIhs7bhvT4_gneC-dFmAJ2BgsTMYAdgTLqc-WpvL6ei0IiR5PEEJe", answer: "Noor Jehan’s Birthday"},
+		22: {pic: "https://lh3.googleusercontent.com/AEN4FBWQE5F2Jq_GvGxa6Mq_1Tp3vd6ujY3XO6ttjhO5AaXrbL7Tsg4ChkzmU4cuSyTVAvs1L2mM1PCNe00MaVry8fNfQ87uoBKUGvpv", answer: "Fall Equinox (Northern Hemisphere)"},
+		23: {pic: "https://lh3.googleusercontent.com/FiXoupwhvWWBkoIQyI4GrYxTJCTRV8Wdm8bUm56k2XAwDhM3VkQ065ggjRvhqm7YkzTjtkTCy9l6q89sfoqTq00mzg2XV-Q-6oJPtNc", answer: "Saudi Arabia National Day"},
+		24: {pic: "https://www.google.com/logos/doodles/2014/60th-anniversary-of-the-unveiling-of-the-first-routemaster-bus-4922931108904960.3-hp.gif", answer: "Anniversary of the unveiling of the first Routemaster bus"},
+		25: {pic: "https://www.google.com/logos/doodles/2013/maria_tnases_100th_birthday-2149005-hp.jpg", answer: "Maria Tănase's Birthday"},
+		26: {pic: "https://lh3.googleusercontent.com/1bapP8w53D9iE31lVZEQrg5NZsrrAOh1hJeub5FI4_oLEARawvkMbacH0EtdhB0pWlU9BGSjeIStw7jE3aj1lZv819l5ZIWI9OkjHvqF", answer: "Gloria E. Anzaldúa’s Birthday"},
+		27: {pic: "https://lh3.googleusercontent.com/vDGu4zQO4-URwjGk0PxUWpjT3rFfc0bxN1T5mbxDAR6Y0Fx6L1ai7QTpm37Qou3Ggm6OTB-AOEbT2Y2tjpju6Y7vMYR563E8Sd57OgJ1NQ", answer: "Google's Birthday"},
+		28: {pic: "https://lh3.googleusercontent.com/W0_4KxmZI_uIFmtBq-xgj4zHdZureLhG5AoAqbWp-uKGlO9PNh7j4d-X_r-ubXiK_Fu7nJlpSRoMeKgjtaFZwF_j83rzVgaVt7DZVuxh", answer: "Thai National Flag Day"},
+		29: {pic: "https://lh3.googleusercontent.com/bynZ0I8ZmyfZSMq8WCXrJeRQsHLWeoXZVhfnyhY8tAqjJUhPMFqekAuE5ByTr4JjYQqUdwkBpR5MDNEj886YlsZURyGFmjS6_cs1ospe2Q", answer: "Children's Day (Dominican Republic)"},
+		30: {pic: "https://www.google.com/logos/doodles/2016/andrejs-jurjanss-160th-birthday-5206479465349120-hp.jpg", answer: "Andrejs Jurjans’s Birthday"}
+	},
+	Oct: {
+		01: {pic: "https://lh3.googleusercontent.com/aw5a84t_5DKM6C_dyNRKCqn8luHpLt4613CiaKKCFwN7EAa1TAFrXINLrG7IxWouSjGp8ptqMyQehxpYwZ6PLuxQ46Y0G7L0g5rV3fg", answer: "Nigeria Independence Day"},
+		02: {pic: "https://lh3.googleusercontent.com/jMBHXAKluhzuYhMeI0hzn6_4MBVAfAMt34C8unsq-qSrIJDW8Kk6QKjCI6dUg-l0Zjek2XXP_jasdL51nzXlGW_f6mSE7aKhWNAIiUky", answer: "Grandparents' Day (Italy)"},
+		03: {pic: "https://lh3.googleusercontent.com/BDAySfh8v5rLpN7_0mxG53Uw3n9JwGPj3-kP9gCK1j8w9K-BmvWDRxKfDshu2QCg0nBSbcLzcjOnODkEpdshFXkcJrim3NpqbB4flif_7A", answer: "Gerardo Murillo's (Dr. Atl) Birthday"},
+		04: {pic: "https://lh3.googleusercontent.com/5Va94zySc68MwYp1nvU7BpwmVXlaMEJ1Knxu9aRXJaXHCL2wH9qRKHxzFYTzSU3vmMGT32Falle3WENLNEcV6tP8rHw5U6QhMD-2BaOG_A", answer: "Mid-Autumn Festival"},
+		05: {pic: "https://lh3.googleusercontent.com/_ZmTaJCITr3GqgbmRXQL2_ZAzQaLwYVIGOfLLhVLlVyuggwj9esEydS6HD7Ad4z9iRkWwqbYLBw_INws7-T2AkBmfMvtQlLBYVHCJ5rSzQ", answer: "Magda Szabó's Birthday"},
+		06: {pic: "https://lh3.googleusercontent.com/hXqnxUFJmBnZCjeV5ovoC0CxafPxCMUKWRp6r9NCb1ANrr5sz3hu6GDlNatuDV9v8Kh57ZgJprgCj_QTDgvGUl5xo4SQPjJ8Lgnm7QU", answer: "Meret Oppenheim’s Birthday"},
+		07: {pic: "https://lh3.googleusercontent.com/LNmm_GRJ43i3AN1kgx6ZQ3gNuahGBFauawKfkgi_eK0GHjP1fdWnKaUb3EPXlGmSbS1b4gBRQ9tnrOOOwy4jHlOzibChDcfLa9ielpGX", answer: "Begum Akhtar’s Birthday"},
+		08: {pic: "https://lh3.googleusercontent.com/DC1tGOjYwcY86bY7ROdVT8_Z2uVc-fUl1OHIothLc_jfHqIlKNOeuo2lUTmQeN6DF9r7ODG1pgbdmS_DX4hVVKhXIVVkNxXzPlofBy25", answer: "Bagong Kussudiardja’s Birthday"},
+		09: {pic: "https://lh3.googleusercontent.com/wQcKg0hFwlvyc1tX591-wxP5PCvELHz8W_1w2ZuKmvKCcFe0rbnN_J36-WQ55n35uhZhUcvxCxcT5xYVtdk9YLLLWNeN0cSJw5DqbTPIRg", answer: "Clare Hollingworth’s Birthday"},
+		10: {pic: "https://lh3.googleusercontent.com/NGfDFU73o2-FYTrDPzF34hhX40MLLISCiauIZRxF__HeENgiJLo8Y6Aal7EWTenoYHepNXxfd1v-NsVQ_JmbV0pbiGCGMvg-uLa9oz1VHw", answer: "Fridtjof Nansen’s Birthday"},
+		11: {pic: "https://www.google.com/logos/doodles/2016/edgar-negrets-96th-birthday-6226931885277184-hp.gif", answer: "Edgar Negret’s birthday"},
+		12: {pic: "https://lh3.googleusercontent.com/p15n2BBX6oTuPmswJu08rei6s3WEQYra8tvqaGHDAvVhUNLtCP6yuN7BcqMnLBdBVOKe803oyo3VM0_-u9hGbfOEWwQzRIGonQXDdq4", answer: "Children's Day (Brazil)"},
+		13: {pic: "https://lh3.googleusercontent.com/DSVAYxblX8f3j4td8hGuydWj-ll0qcGmsGM76GFLCZ_ut5XlbPNab7LEU3aXt-HYVuUIiiZD7dhMcmS_-KkWw5DdeXzjDib5VMDmnio3", answer: "Anniversary of the Traffic Light Man"},
+		14: {pic: "https://lh3.googleusercontent.com/U0Y0IPkJxB6xekeqhESedriSuMiiH-HjEW-45U6uv3q5Nzmyjw2WGiqX2nsZ4g-fNRjdakDpxvcaZVJ26y01PIekkMwU1OJ5A78QTUPssA", answer: "Teachers' Day (Poland)"},
+		15: {pic: "https://lh3.googleusercontent.com/z5ntyQ2umxnlNtmbSsQ8J6grMWLFhpRDpBMxrz_kwoc1RqgnraL4q7rskhwyQec2OE3yShR-yLBmoP5qaGqVuEkz-DETq8no5Fyix8IK", answer: "Teachers' Day (Brazil)"},
+		16: {pic: "https://lh3.googleusercontent.com/rLeNjvrwpjD2VBOszfOn7smUYuRvQxudbSGLQHZvrPgq6tyUEqJr8fYuLlS9NtYB6EfVD6AnzmsD61oxRCwZbyVZx2RDqMP1_qZkVxg", answer: "Olaudah Equiano’s Birthday"},
+		17: {pic: "https://lh3.googleusercontent.com/dVphOerNt1SEMT02AFdpOXSxY9mE1YFCXT3U09yGlD88EaNZLHj0d9tysLeFN0ph9atgS_OclJCAjVUflRiP93TOLb2QirKQmZy2A0I", answer: "Celebrating Selena Quintanilla"},
+		18: {pic: "https://lh3.googleusercontent.com/xR_x8O6ir0_KvQO2U9yGE5mtv9tlbtXdcwBHhovH9XIUGT9BDhN3PsP3K8OgiRNlgvgfiW2DJtMw1UR2zsjUe3MpqaYri03Jm-7VG0Y", answer: "Celebrating the Studio for Electronic Music"},
+		19: {pic: "https://lh3.googleusercontent.com/7f0pQEWgkpF2rd0dXTocZXu9pynus0sZPSh5WwhmboIvq4cSOOzhf2nlR8x1l5QkxMxo6NjW2dW03N9_5AZSqUHroCxgUoIPssGko1v3", answer: "S. Chandrasekhar’s Birthday"},
+		20: {pic: "https://lh3.googleusercontent.com/g2KGey24Bta57Hspr86fRy5XbsvwQq_DkUqEuzGwr7f1Thb7ekjS5LXdYcCZwSy_y-gDIFSiRirn-N5hhmUyDeuNz9V8iDiAw-bi0YM", answer: "Otfried Preußler's Birthday"},
+		21: {pic: "https://lh3.googleusercontent.com/m8OKXuF0A-sBdRVewatrNaFiOa93CIffKi3c_2OXzfo-9_8o0e9NvvPbOn7F5Er6_zJ8lteH0Iiz9pGBXaRagPhPgb5TpAAzL1U3ZbU", answer: "Nain Singh Rawat’s 187th Birthday"},
+		22: {pic: "https://lh3.googleusercontent.com/3t0823OQt_xSx6TdgCZ-pBGIMzPJ_ben1WiqRh1Oarp31cMsJP6f-lcWwCFsgGoAkvX0ftWhSCOd76nYk-0VO320G6VPCkmU9Z1h41PN", answer: "Argentina Elections 2017"},
+		23: {pic: "https://www.google.com/logos/doodles/2016/hungary-national-day-2016-5167720136966144-hp.jpg", answer: "Hungary National Day"},
+		24: {pic: "https://www.google.com/logos/doodles/2016/antoni-van-leeuwenhoeks-384th-birthday-5116176595156992-hp.gif", answer: "Antoni van Leeuwenhoek’s Birthday"},
+		25: {pic: "https://lh3.googleusercontent.com/DxPYtnR-MPAt9wmVQ3XdiiSeF8bci2BPpVNN1TlwwluTZQigE5bZPzlah8sSScijMlfi-vH9q43JJoNJHOe5tNuWkz80YYCV7sAxJsE", answer: "Âşık Veysel Şatıroğlu 123rd Birthday"},
+		26: {pic: "https://lh3.googleusercontent.com/JGcVBgLsVJRF-ID449dQZ0XEtRjfx8pdmq7jRffVcFC9f75V6YpOqkMb-BD2W74nNx-nmqp2XRpB0Xg2macGhwDXs9tr6gnlE92fsXKT", answer: "Anniversary of Film 'Office Romance'"},
+		27: {pic: "https://lh3.googleusercontent.com/z0kox5mQKbCFUBQG2-eUjG5Pvx8T1OlWtyipNLXuPwLxyALwO8sjuAkC6NWtrkFNpsLZABqGf1hH4KTMuLg9s509B8zy4qO8hprZ81-npw", answer: "Teachers' Day (Australia)"},
+		28: {pic: "https://lh3.googleusercontent.com/87X-khoppQElKGic1TtHRySsRwP7xY3ZwQNUu3eO8GBrmMzv-kdAYBFj0v9g23TSj3j5e2mEYihodw86Mr1s66nUH1jeyLR0htSil3Y", answer: "Children's Day (Australia)"},
+		29: {pic: "https://lh3.googleusercontent.com/twb9qDl-TLnLRdZrtB2_UCDCHAGKK7WPbgYtD_blFtrEdEQQAY3oOW8PIA2wT8_pfWIG3UnAyza_E1k_i2pQuQ5UeRyVv117Tb-HcYH2", answer: "Turkey Republic Day"},
+		30: {pic: "https://www.google.com/logos/doodles/2014/maria-izquierdos-112th-birthday-6256555573903360-hp.jpg", answer: "Maria Izquierdo's Birthday"},
+		31: {pic: "https://lh3.googleusercontent.com/Hcu39OG0IXeU3uMO85AG8eEds0wQzWPDc8vJR-H86c5RNnRikkEDrKbdxane6mrUmPbT7QiGa1O0PksuMAmgqmMKJEVLiR_Fl57cQBQ", answer: "Halloween"}
+	},	
+	Nov: {
+		01: {pic: "https://lh3.googleusercontent.com/TIaLA30B-AGMcNQ5QauUcrTYV2_u1Fp4FxtMiRAYdF7LDVghtVJmrV_fSifRvKWtoQxnnnp_KVq2-r2wUaZl5bNqZVt7Vbut-fwEoKU5", answer: "Abdul Qavi Desnavi’s Birthday"},
+		02: {pic: "https://lh3.googleusercontent.com/HNJJBUMviif5Yj6Y91LwE0IQ4A8HD_1UdRqJchtPucdQKn3pbgdBQ93K8kwutlHxtcg6-02yfidjOtgSi9cisK51YNoewxPVzXza2Z6_nw", answer: "Day of the Dead"},
+		03: {pic: "https://lh3.googleusercontent.com/fV-XUftJSLG-KM2cYNqGxWVppQodsRUt33gd3oC_dNe93PlJV54-RTLbDAdfZNhLUGW7mmLz7PS3DBwpai6zXv-2WtJAuw4Hfz1kOB0RAQ", answer: "Loy Krathong"},
+		04: {pic: "https://www.google.com/logos/doodles/2016/walter-cronkites-100th-birthday-4805020395503616.5-hp.gif", answer: "Walter Cronkite's Birthday"},
+		05: {pic: "https://lh3.googleusercontent.com/THBPDLbn1T5rnclwYrEVnTSWqjDAnLIAVSvn143mBqKeBJWIwz7OGmargh7EV_DciYkGmNzrfuSBpKU39qWv__1TbunxkUwGbu0Rrcmx4g", answer: "Hirotugu Akaike’s Birthday"},
+		06: {pic: "https://lh3.googleusercontent.com/epeQ-rE1HZCF4hY3pMF6PVyF16xy20NZk9yYXiZoMC_4PXqZxh2kljFCNOXWsQLITVUYnNTeBrv-yFUqHDC1LYh4j6matVR0qx9xOmGLTg", answer: "Jackie Forster’s Birthday"},
+		07: {pic: "https://lh3.googleusercontent.com/6DLDCb9lwbk6nMC_7-dGvLIcQzOryM-ktSKsbo1mOJyg-i-9CbWXwFuCPjU6PkknxGAs_ldJ7WddCWBggL7iGYw__8evCJqqChV1RER2Tw", answer: "Celebrating Pad Thai"},
+		08: {pic: "https://lh3.googleusercontent.com/as42OGe97V4dDxqxpfZIzX_VbnxfScs5vfrEMbRVkAL054PgdT_Pqb2EpZde3aeK80Svu7Wb8CoOIVEvH3UmbO1ZMvQvOIvVzIlPIY7Hng", answer: "Sitara Devi’s Birthday"},
+		09: {pic: "https://lh3.googleusercontent.com/In4rHur7txfWF7BboJAoCqT5b3E0UKwv_sdadXqiqOPm8qBNzfmBIiNFlKZVjEUlDuJIR5vmlNjMygSSu4Cq0Kw5N6yl74XObtND3FFkPg", answer: "Cambodia Independence Day"},
+		10: {pic: "https://lh3.googleusercontent.com/hadP7qMfoDa32PIg_qI_xQmlLltGQcH6iku6MC6LuOhTHllp2oov2b-wOpyJIRLNMeQC-ujoNJRBi24hMACOBO1m99K180hkktQryAi7oQ", answer: "Sabah’s 90th Birthday"},
+		11: {pic: "https://lh3.googleusercontent.com/ushkONpEH49xjS7WOfWWMqOefXxF9UD3r7uwNQ-_8OmHaVaetACTzLSB__WJcGHkvlRDC6ay-NeHEQqwJPy--g4H4VaNSw6afGHvShku5w", answer: "Poland Independence Day 2017"},
+		12: {pic: "https://lh3.googleusercontent.com/SRT-cZwIzG5keHOWEs0_lPq5ZEei2gCb05J6p2DPkUXaMwCkT-C57K0Ek81Um3agCpysvWbrh5-kBG1Ylkzqvv17UXFHGKZ3Mny5wfBs", answer: "Sor Juana Inés de la Cruz’s Birthday"},
+		13: {pic: "https://lh3.googleusercontent.com/6c61tAdd5Cze-h2n-np4ym-S6WghDm8TssxDLxYyzssf6pLgJek7LZWKrDXXh-umWnB9mIQDJ6TGiOBwwuJJvJF0QzeW3ES3Zrw757MonA", answer: "Humayun Ahmed’s 69th Birthday"},
+		14: {pic: "https://lh3.googleusercontent.com/DaQHmI45bLiu_MUJqEHN9ftVLPz4q_jQ-yDFK1RZrPtHoARk_weodbGAiA2ygkAYr-NE9hS59s5ijcR290yQqUq0eGs1qPxk7Yx8Tk4", answer: "Anniversary of the Hole Puncher"},
+		15: {pic: "https://lh3.googleusercontent.com/Skuhdptmswg0W6ZOk0FmeIFLFCY29ErBiAyT8QUU6HLVs7rzPfzsDchUTQslBFH2MSf7Nricw7l2-11sNb7qW67NRV2kFjdjqyayuhA", answer: "Cornelia Sorabji’s Birthday"},
+		16: {pic: "https://lh3.googleusercontent.com/IxUkl2v3vhte0AA8njNuzGCQ5kqINICB00YTzc1FK0ovzLlsFE7Mmg6AYuBQbCt_zxMjYReoIuckZHzR1J2eHU96r13aP0cKo9Q6G2VhWg", answer: "Chinua Achebe’s Birthday"},
+		17: {pic: "https://lh3.googleusercontent.com/sJlUgRcwk37U_IPiOoUXaek6Ubc8IvQt4KQMrQk9DLMabznK4qKj4sbHD0ELkrUTtRzpsTSD8JHDZRrzaYgzYz2ebkMx1MHodbig9no", answer: "Czech Republic National Day of Freedom"},
+		18: {pic: "https://lh3.googleusercontent.com/d0lZX6NpjfRuqw0PqTu_ZEB_565mJUJpYRxzxq8OJHR6Ds5gA3A7RMfKSZVCnwgYR-7b9fGfjumUeMLSpBqbrJG9MvOaMcSVRg3JKlVEqg", answer: "Morocco Independence Day 2017"},
+		19: {pic: "https://lh3.googleusercontent.com/WHPTbKwWtP1UML6AgO08ubRMYK1y99az0bPEGEChgXOq3VGsHVH6ZFupa-lDtBkEy8yT9SSWcHK0iPWNwrumAVTw-I-1X8BqdjHsE0d6", answer: "Chile Elections"},
+		20: {pic: "https://lh3.googleusercontent.com/Lf2y2M5j0qPAfBQdyGk_tO2DjgWPiotN8lgrq9-aWfOv5WNdC7rHFswuBi0GSFaxGRO4hC2N_5Uojj_9MXk9yIgBHmSTRX95FslkWQTZ", answer: "Children's Day (Multiple Countries)"},
+		21: {pic: "https://lh3.googleusercontent.com/5MbU6tcRZjhDcxUh1LYKIbnxjkpRvUz03Lj9IJFk9cxNHUFzNuLju1gVcrN3WSQgdV3RVS7V3vwkW9v52Ww54F1Exzwz8fQGtx_CcDtA", answer: "Denmark Municipal Elections"},
+		22: {pic: "https://lh3.googleusercontent.com/XKowz_h_gaOHSSB4IWqfNlJkb4z2GJgWdlPHuWITXSiXA-uuhb8kzeD170CrDrLmccmkJc0dW77fnHSUDcQICAvfDnLuGrhapr-D2fA", answer: "Celebrating Kimchi"},
+		23: {pic: "https://lh3.googleusercontent.com/qrwo9wMa5yRIXuf7_MQ2Kir7nkGc5Vt7hR84mUTYh1_XnTlgunX5zDZMi7j2GdNkX5oAuVL1mUo_68FfjEuqmu-ZHLFmLRpoCDAaUrN4", answer: "Thanksgiving"},
+		24: {pic: "https://lh3.googleusercontent.com/I-7zZRoCMh77FE-HCF9qTjbfPLDa_RmGFdVLganwG_rPIzpdwSOv-pb9wqHYPaD7rWDNu7dB3rBVQ0qC-BuP3hBksxLyv-7_JgH9aZ4", answer: "Celebrating Mensch ärgere dich nicht"},
+		25: {pic: "https://lh3.googleusercontent.com/1NW0ZruorJESNEtwpJlPNz9_1NUVWm1LCi8554nO29fHvXfJzfsQ-W8SP4tVcFWJSqDP4loW4RC7YyAkng6wMFOYnZbQ_Y9v3n-26gVH", answer: "Lope de Vega's Birthday"},
+		26: {pic: "https://www.google.com/logos/doodles/2015/verghese-kuriens-94th-birthday-4760371399229440-hp.jpg", answer: "Verghese Kurien’s Birthday"},
+		27: {pic: "https://lh3.googleusercontent.com/GLb7acacooXqcNK8EJ7TbS7tpTe07tSsP_tUawIvtruJbhkTRAy5pxiuvdHPJo0LXpT9UMSQcUpRHTFzCwovTPvzXFU4JKtZarwuRSew", answer: "Teachers' Day (Spain)"},
+		28: {pic: "https://www.google.com/logos/doodles/2016/drs-suyadis-84th-birthday-6201901474381824-hp.jpg", answer: "Drs. Suyadi's Birthday"},
+		29: {pic: "https://lh3.googleusercontent.com/O1QxwFVp1EV6fBIOmW8rR7llejkzxTniguowk24Zv6HXomZUiyavxU6MzIoicTL_uabI7uJHBondCA5aLctmWyU0CN3GSduuAEfCvUwOJw", answer: "Gertrude Jekyll’s Birthday"},
+		30: {pic: "https://lh3.googleusercontent.com/SxEUSVKcwEkBvK33eu6k21_GdAibMUZq-wbDpDcYo4m5Pb6E3Hr-oLuYgHfBElTsPrdYf43Zi5TSQZo1hd4z3a1AFf0fTKpYYXZUj2Fi4g", answer: "St. Andrew's Day 2017"}
+	},	
+	Dec: {
+		01: {pic: "https://lh3.googleusercontent.com/umLWmwP1k3bb7agvQamZHV-cdvIxITwV63uocozRS4H10H7TPkDhiamnEuUOSEV20UyybitysSbgg9oLPHVOfPiVQmUM4_7HL18FCFAOyQ", answer: "Romania National Day"},
+		02: {pic: "https://lh3.googleusercontent.com/DYyuxsptJ3JYYDwh8UbFCFlAeR6ONPWIE3lmgu5MgD-WrkssXdPrWRtaqZwKcUPlXJsabII6Qh0WC1cSG0sAY07xN37xVAmw1ORVgRU", answer: "United Arab Emirates National Day"},
+		03: {pic: "//www.google.com/logos/doodles/2014/anna-freuds-119th-birthday-5664856720015360-hp.jpg", answer: "Anna Freud's Birthday"},
+		04: {pic: "https://lh3.googleusercontent.com/exqWqA33cPiOsLpJoAtENhdytEbOe9LwF-D_AICVzgopjMD0DPClJ9lSLCBDmEozy8jslGfz8hb9E99C5ZpDDUk1J37WOX_R1q7d-84ybw", answer: "Celebrating 50 years of Kids Coding"},
+		05: {pic: "https://lh3.googleusercontent.com/q1fpasrnqK3o_V-8cFdSmYaMaAFcK_I3nt-a7u5GIzDhYruIJ3Kgs1nYJ5wrQasaHMURnjzjzT_dCWLiEUr1bbtSb_hBgPyHUXGN46Cf", answer: "Veronika Dudarova’s Birthday"},
+		06: {pic: "https://lh3.googleusercontent.com/2UcaSN-peN8TkqJBcq46Gt0lX2S-UlltkBG-HXHiGBz6kRbM1jcLeE0cfEJ4R_CW7mepn2gnDOh0-bdr_90FwpLKK4fEDJJ90ON1jD6j", answer: "Finland Independence Day"},
+		07: {pic: "https://www.google.com/logos/doodles/2016/340th-anniversary-of-the-determination-of-the-speed-of-light-5651280530767872.2-hp.gif", answer: "Anniversary of the Determination of the Speed of Light"},
+		08: {pic: "https://lh3.googleusercontent.com/0UNwP3DXMCGGd605y9z5JqW1awCqN6HvN9u1dtSNdVeOc9aFxDC6k8v06idt4Rhlh7MJ3mxwI09nG7GfE8OWrmnC0jLINdb6VYlsRsI3", answer: "Jan Ingenhousz’s Birthday"},
+		09: {pic: "https://lh3.googleusercontent.com/IyxNFJjqauBk3iVd4VhF6eoNxe-jMnxY7wPSmFCUaEVNK6iq_X4Beu3onIMZ7J3-y5mP7mUKJ0iaW4Wo00VYEKJaA0he1XAZOmzYG3Y5", answer: "Homai Vyarawalla's Birthday"},
+		10: {pic: "https://lh3.googleusercontent.com/shSxQBWDvZaPUhI6K-Qc4I2iPsOUmQXuO0FgUjGam1XT6_pflEm343wvvbu7-NvmvZ231IwV6-9J2vjyHzjvylmIx1A6MzMcN810px12", answer: "Celebrating Robert Koch"},
+		11: {pic: "https://lh3.googleusercontent.com/W8hmkuqHoDTCJU3fjMwHv4_YigIS3rmwTknLrGfMQedCWBByuYfwya2z_s-eg375qur9sdH7lm7L-epPqzCNdfa3YJEfU1OJv2gKM311", answer: "Teachers' Day 2017 (Israel)"},
+		12: {pic: "https://lh3.googleusercontent.com/ICH7Vr_VA-Zc2QLx3KHJ1lxgv8T5LhifAGT-Npt5n1LmPe4bcHg3z7PF_hnS9_iHo5Cz6uNaRp82wlWzfTBcHch_SBhD1Jl8DyUb5p4", answer: "Kenya Independence Day 2017"},
+		13: {pic: "https://www.google.com/logos/doodles/2016/turkan-saylans-81st-birthday-5685919978881024-hp.jpg", answer: "Türkan Saylan’s Birthday"},
+		14: {pic: "https://www.google.com/logos/doodles/2016/doria-shafiks-108th-birthday-5734982061391872-hp.jpg", answer: "Doria Shafik’s Birthday"},
+		15: {pic: "https://www.google.com/logos/doodles/2015/chico-mendes-71st-birthday-6167013453987840-hp.jpg", answer: "Chico Mendes’ Birthday"},
+		16: {pic: "https://lh3.googleusercontent.com/_jm-2cTPvOr058o29B_uPEsP_Q514CtFHFyjmecerSwc0Isd6ryC-3b6J_1niqWvaWZSO4zOCUT7WaLB9gdoc8fE5cN_Wjx1wtY3FgA", answer: "Kazakhstan Republic Day"},
+		17: {pic: "https://www.google.com/logos/doodles/2015/beethovens-245th-birthday-4687587541254144-hp.jpg", answer: "Ludwig van Beethoven"},
+		18: {pic: "https://lh3.googleusercontent.com/7-t5kQkDHsKY1pHpfMyOGdBFIZ-uBRdaDIvT8ZhDCqt8VpN691UnUPNn6y-cjV60ONkE7uGz01i5Hs_RyFKs9gl03KeySpyBvKK865pp4g", answer: "Holidays"},
+		19: {pic: "https://www.google.com/logos/2012/s_korea_election_day_2012-1003005.1-hp.jpg", answer: "S. Korea Election Day"},
+		20: {pic: "https://www.google.com/logos/doodles/2015/spain-elections-2015-5652792221892608-hp.jpg", answer: "Spain Elections"},
+		21: {pic: "https://lh3.googleusercontent.com/yYkWDjl89SMW_-wnauLiOGKpEavL89De8HGvo5lpXLpbnuQBMTZlzu-ilRg-qZWj3DQkqDGk9uaEQBJMqwjLRa4kiSmEp96FpzTKPAJx", answer: "Winter Solstice 2017 (Northern Hemisphere)"},
+		22: {pic: "https://www.google.com/logos/doodles/2016/marko-vovchoks-96th-birthday-5723092383956992-hp.jpg", answer: "Marko Vovchok’s (Mariya Vilinska) Birthday"},
+		23: {pic: "https://www.google.com/logos/doodles/2016/holidays-2016-day-1-southern-hemisphere-5121282298347520-hp.gif", answer: "Holidays Warm Climates"},
+		24: {pic: "https://lh3.googleusercontent.com/FdcFT5QRkqdz-IWGqguOOWxZcI6L7GhAQnhXh7VeoggW6F3iSVbgPZmqt5-XLQ2lCHlx-b6rVQrz3hNSsJ7hAFCGWHZT2qgKFFaXx_E", answer: "Mohammed Rafi’s Birthday"},
+		25: {pic: "https://lh3.googleusercontent.com/RK3vLMzvXtKaZ3XSHKvmaeSAxrvazANCZK-zBx1zHKxDAnqNkpJML6HuTD-laPKIBQ1GnCA-FPqv6sxe_RTYnOepbw4Kf5-_YMtABu-K", answer: "Christmas"},
+		26: {pic: "https://www.google.com/logos/doodles/2015/25th-anniversary-of-slovenian-independence-and-unity-day-2015-5157938184323072-hp.jpg", answer: "Anniversary of Slovenian Independence and Unity Day"},
+		27: {pic: "https://lh3.googleusercontent.com/RUhQXew5DMffmIvExC27asoxD4Oo3R4-X-yckmRyPfQU2cs0suaqchzo4F87x3f_yydR42dUCzJCUGVzKqICPQ6Hyt8LLC2J6ZnrJRo", answer: "Marlene Dietrich’s Birthday"},
+		28: {pic: "https://www.google.com/logos/2012/leonardo_torres_quevedos_160th_birthday-994005-hp.jpg", answer: "Leonardo Torres Quevedo's Birthday"},
+		29: {pic: "https://lh3.googleusercontent.com/0BayIXZtv9gEyKck2Pq7tBN35TjkvyHga9YvMZmsBzkszCDbJ2E4gDpojEap2LGTUg_BrM5gaf4KJVRRf4RZgrwL48jffdtAWL-XLofJ", answer: "Kuppali Venkatappa Puttappa’s Birthday"},
+		30: {pic: "https://lh3.googleusercontent.com/jeK_WshNnIY_GfnTj-6k9MddN9oXxiQXZh6Km2TqDOjCLcrJdxOyLcWJNgRFvD-b_dFTkFMvhtpMmoi6ElLvuL1SzH4M5pIDLCoF4lE", answer: "Etab's 70th Birthday"},
+		31: {pic: "https://lh3.googleusercontent.com/aKBSC9MdiqJErrlLyntmM-Tl5uLrV9MKY1MoV9F3q8vqAr32VlQGI_hN1XDkx6K4Q-mKxum_2CGyo2oRKOYMU81jpnoord0-jac5l2k-", answer: "New Year's Eve"}
+	}
+}
+
+$("#demo").datepicker({
+  changeYear: false,
+  changeMonth: true,
+  yearRange: "2018:2018",
+  dateFormat: "M-dd",
+  onSelect: function(dateText) {
+	document.querySelector("#inner-wrapper").style.left = 0;
+	document.querySelector("#inner-wrapper").style.animationName = 'slideRight';
+    date = this.value;
+	console.log(date);
+	let month = date.slice(0,3);
+	let day = date.slice(4, 6);
+	day = Number(day);
+	console.log(doddleObj[date.slice(0,3)][day]);
+	document.querySelector("img").src = doddleObj[date.slice(0,3)][day].pic;
+	if(this.value == ""){
+		document.querySelector("#show-answer").textContent = "Please select a date"
+	}
+	document.querySelector("#show-answer").textContent = doddleObj[date.slice(0,3)][day].answer;
+  }
+});
+
+var span = document.querySelector("span");
+var innerWrapperWidth = document.querySelector("#inner-wrapper").getBoundingClientRect().width;
+var startX;
+	
+span.addEventListener('mousedown', spanListener);
+
+function spanListener (e) {
+	startX = e.x;console.log('mouse down');
+	document.querySelector("#inner-wrapper").addEventListener("mousemove", sliding);	
+}
+
+function sliding(e) {
+	document.querySelector("#inner-wrapper").style.animationName = '';
+	document.querySelector("#inner-wrapper").style.left = '-' + (startX - e.x) + 'px';
+}
+	
+window.addEventListener('mouseup', unbindSliding)
+
+function unbindSliding(){	
+	document.querySelector("#inner-wrapper").removeEventListener("mousemove", sliding);	
+	if(-(parseInt(document.querySelector("#inner-wrapper").style.left)) > innerWrapperWidth / 4){			
+		document.querySelector("#inner-wrapper").style.animationName = 'slideLeft';
+	} else {
+		document.querySelector("#inner-wrapper").style.animationName = 'slideRight';
+	}
+}
+</script>
+</body>
+</html>
